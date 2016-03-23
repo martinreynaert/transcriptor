@@ -15,16 +15,17 @@
 #import os
 #language = os.environ['language']
 
+import os
+import sys
+from base64 import b64decode as D
 from clam.common.parameters import *
 from clam.common.formats import *
 from clam.common.converters import *
 from clam.common.viewers import *
 from clam.common.data import *
 from clam.common.digestauth import pwhash
-from os import uname
-import sys
-REQUIRE_VERSION = 0.9
-import os
+
+REQUIRE_VERSION = 0.99
 #The System ID, a short alphanumeric identifier for internal use only
 SYSTEM_ID = "TranscriptionApp"
 
@@ -38,15 +39,49 @@ SYSTEM_NAME = "A Transcriptor for Proper Names"
 #SYSTEM_DESCRIPTION = "Dit transcriptiesysteem voor namen werd in een NWO 'Kiem' project ontworpen aan de Radboud Universiteit, onder leiding van Prof.dr. Nicoline van der Sijs. Dit systeem biedt 'Vlug Omzetten' op basis van regelgebaseerde transcriptie van het Russisch naar het Nederlands, het Engels en het Duits en andere omzettingen voor specifieke doeleinden. Het systeem biedt ook fuzzy en metadata gebaseerd opzoeken van anderstalige varianten voor persoons- en plaatsnamen in grote databanken van JRC-Names en Geonames als 'Uitgebreid Zoeken'. Vlug omzetten gebeurt onmiddellijk, het uitgebreid opzoeken vraagt een paar minuten."
 SYSTEM_DESCRIPTION = "De Transcriptor geeft Russische persoonsnamen, aardrijkskundige aanduidingen en woorden weer in de schrijfwijze die voor het Nederlandse taalgebied aanbevolen is. Klik op Info voor meer informatie."
 
-hostname = uname()[1]
+hostname = os.uname()[1]
 if hostname == 'ticclops.uvt.nl' or hostname == 'black.uvt.nl':
     HOST = 'ticclops.uvt.nl'
-#The root directory for CLAM, all project files, (input & output) and
-#pre-installed corpora will be stored here. Set to an absolute path:
+    #The root directory for CLAM, all project files, (input & output) and
+    #pre-installed corpora will be stored here. Set to an absolute path:
     ROOT = '/opensonar/TransApp/'
     URLPREFIX = 'transapp'
     #BASEDIR = '/exp2/mre/ticclops/'
     BASEDIR = '/opensonar/TransApp/'
+elif 'VIRTUAL_ENV' in os.environ:
+    # Virtual Environment (LaMachine)
+    ROOT = os.environ['VIRTUAL_ENV'] + "/transcriptor.clam/"
+    PORT = 8802
+    BINDIR = os.environ['VIRTUAL_ENV'] + '/bin/'
+    BASEDIR = os.path.dirname(os.path.realpath(__file__))
+
+    if hostname == 'applejack': #configuration for server in Nijmegen
+        HOST = "webservices-lst.science.ru.nl"
+        URLPREFIX = 'transcriptor'
+        BASEDIR = '/scratch2/www/webservices-lst/live/repo/transcriptor/'
+
+        if not 'CLAMTEST' in os.environ:
+            ROOT = "/scratch2/www/webservices-lst/live/writable/transcriptor/"
+            if 'CLAMSSL' in os.environ:
+                PORT = 443
+            else:
+                PORT = 80
+        else:
+            ROOT = "/scratch2/www/webservices-lst/test/writable/transcriptor/"
+            PORT = 81
+
+        USERS_MYSQL = {
+            'host': 'mysql-clamopener.science.ru.nl',
+            'user': 'clamopener',
+            'password': D(open(os.environ['CLAMOPENER_KEYFILE']).read().strip()),
+            'database': 'clamopener',
+            'table': 'clamusers_clamusers'
+        }
+        DEBUG = False
+        REALM = "WEBSERVICES-LST"
+        DIGESTOPAQUE = open(os.environ['CLAM_DIGESTOPAQUEFILE']).read().strip()
+        SECRET_KEY = open(os.environ['CLAM_SECRETKEYFILE']).read().strip()
+        ADMINS = ['proycon','antalb','wstoop']
 else:
     #FOR ANY OTHER HOST!
     HOST = 'localhost'
