@@ -108,8 +108,8 @@ REQUIREMEMORY = 10
 # ======== WEB-APPLICATION STYLING =============
 
 #Choose a style (has to be defined as a CSS file in style/ )
-#STYLE = 'classic'
-STYLE = 'ticclops'
+STYLE = 'classic'
+#STYLE = 'ticclops'
 
 ACTIONS = [
     Action(id='Transliterate',name="Transliterator",
