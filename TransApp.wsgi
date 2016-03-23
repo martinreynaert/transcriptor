@@ -17,7 +17,11 @@
 import sys
 import os
 
-WEBSERVICEDIR = '/opensonar/TransApp/' #this is the directory that contains your service configuration file
+hostname = os.uname()[1]
+if hostname == 'ticclops.uvt.nl' or hostname == 'black.uvt.nl':
+    WEBSERVICEDIR = '/opensonar/TransApp/' #this is the directory that contains your service configuration file
+elif hostname in ('applejack','applejack.science.ru.nl'):
+    WEBSERVICEDIR = '/scratch2/www/webservices-lst/live/repo/transcriptor/'
 sys.path.append(WEBSERVICEDIR)
 os.environ['PYTHONPATH'] = WEBSERVICEDIR
 
