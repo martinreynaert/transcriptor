@@ -1,0 +1,63 @@
+flex toFLEX/Accent.toFLEX
+gcc lex.yy.c -lfl
+cp a.out Accent.flex
+flex toFLEX/ALA-LC-simpel.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.ALA-LC-simpel.flex
+flex toFLEX/ALA-LC.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.ALA-LC.flex
+flex toFLEX/BGN-PCGN-simpel.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.BGN-PCGN-simpel.flex
+flex toFLEX/BGN-PCGN.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.BGN-PCGN.flex
+flex toFLEX/british-standard.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.british-standard.flex
+flex toFLEX/ENG-RUS.toFLEX
+gcc lex.yy.c -lfl
+cp a.out ENG-RUS.flex
+flex toFLEX/GOST-1983.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.GOST-1983.flex
+flex toFLEX/GOST-2000b.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.GOST-2000b.flex
+flex toFLEX/GOST-2004.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.GOST-2004.flex
+flex toFLEX/GOST_R_52535.1-2006.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.GOST_R_52535.1-2006.flex
+flex toFLEX/ICAO.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.ICAO.flex
+flex toFLEX/ISO9-1995.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.ISO9-1995.flex
+flex toFLEX/paspoort-1997-2010.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.paspoort-1997-2010.flex
+flex toFLEX/paspoort-ussr.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.paspoort-ussr.flex
+flex toFLEX/populair-duits.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-DE.populair-duits.flex
+flex toFLEX/populair-engels.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.populair-engels.flex
+flex toFLEX/populair.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-NL.populair.flex
+flex toFLEX/rijbewijs.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.rijbewijs.flex
+flex toFLEX/wetenschappelijk.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-EN.wetenschappelijk.flex
+flex toFLEX/wikipedia-nl.toFLEX
+gcc lex.yy.c -lfl
+cp a.out RU-NL.wikipedia.flex
