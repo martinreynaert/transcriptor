@@ -113,7 +113,7 @@ STYLE = 'classic'
 
 ACTIONS = [
     Action(id='Transliterate',name="Transliterator",
-           description="Transliterate a Cyrillic name",command="perl /opensonar/TransApp/Transliterator.pl $PARAMETERS",
+           description="Transliterate a Cyrillic name",command="perl " + BASEDIR + "/Transliterator.pl $PARAMETERS",
            mimetype="text/plain",
            parameters=[
                StringParameter(id='x',name="Input"),
