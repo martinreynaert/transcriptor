@@ -15,13 +15,11 @@
 use Getopt::Std;
 
 # OPTIONS
-#getopts('a:b:c:d:e:f:g:h:i:j:k:l:m:n:o:p:q:r:s:t:u:v:w:x:y:z:');  ##Inperken!!
-#getopts('b:c:d:e:f:g:h:i:j:k:l:m:n:o:p:q:r:s:t:');
-getopts('b:c:d:e:f:i:j:k:l:m:n:o:p:q:r:s:t:');
+getopts('a:b:c:d:e:f:i:j:k:l:m:n:o:p:q:r:s:t:');
 
 print STDERR "TICCL_OPTS: a: $opt_a b: $opt_b c: $opt_c d: $opt_d e: $opt_e f: $opt_f g: $opt_g h: $opt_h i: $opt_i j: $opt_j k: $opt_k l: $opt_l m: $opt_m n: $opt_n o: $opt_o p: $opt_p q: $opt_q r: $opt_r s: $opt_s t: $opt_t u: $opt_u v: $opt_v w: $opt_w x: $opt_x y: $opt_y z: $opt_z\n";
 
-#$ROOTDIR = $opt_a;
+$ROOTDIR = $opt_a;
 $TOOLDIR = $opt_b;
 $INPUTDIR = $opt_c;
 $OUTPUTDIR = $opt_d;
@@ -54,10 +52,10 @@ while ($listinput = <I>) {
      #$query = $listinput;
      #$listinput =~ s/$/\t1/g;
      
-     open(IN, ">/opensonar/TransApp/deaccent.txt");
+     open(IN, ">$OUTPUTDIR/deaccent.txt");
      print IN "$listinput\n";
      #close IN;
-     $listinput = `/opensonar/TransApp/Accent.flex </opensonar/TransApp/deaccent.txt`;
+     $listinput = `$ROOTDIR/Accent.flex <$OUTPUTDIR/deaccent.txt`;
      ## $listinput needs chomping???
      print IN "2: $listinput\n";
      #close IN;
@@ -369,13 +367,13 @@ if (($name =~ /^$/) and (($interlang =~ /ru/) or ($targetlang =~ /ru/))){  ##Nam
 #if (($interlang =~ /ru/) or ($targetlang =~ /ru/)){
 print STDERR "NONAMEFOUND: >>$name<<\n";
 ##Do automatic transcription only
-#$flx = $OUTPUTDIR . '/' . $prefix . '.flx';
-$flx = $prefix . '.flx';
+$flx = $OUTPUTDIR . '/' . $prefix . '.flx';
+#$flx = $prefix . '.flx';
 print STDERR "NONAMEFOUND2: >>$name<< FLEX: $flx\n";
 open (FLX, ">$flx");
 print FLX "$originput\n";
 close FLX;
-`/opensonar/TransApp/RU-NL.populair.flex <$flx >$flx.out`;
+`$ROOTDIR/RU-NL.populair.flex <$flx >$flx.out`;
 print STDOUT "<FONT COLOR=\"\#910a22\">Your Query:</FONT>\n\n\t\t\t<h>$originput<\h>\n";
 print STDOUT "\n<FONT COLOR=\"\#910a22\">Corpus name versions for interlingua:</FONT> $interlang\n\n\tNeither the query nor any variants occur in our database of names.\n";
 print STDOUT "\n<FONT COLOR=\"\#910a22\">Automatic transcription for target language:</FONT> $targetlang\n\n";
@@ -524,7 +522,7 @@ print FLX "$NamesInter{$interName}{$frq}\n";
 }
 }
 if ($interlang =~ /ru/){
-`/opensonar/TransApp/RU-NL.populair.flex <$flx >$flx.out`;
+`$ROOTDIR/RU-NL.populair.flex <$flx >$flx.out`;
 print STDOUT "\n<FONT COLOR=\"\#910a22\">Automatic transcriptions for target language:</FONT> $targetlang\n\n";
 open (FLXout, "$flx.out");
 while ($transcrip = <FLXout>) {
