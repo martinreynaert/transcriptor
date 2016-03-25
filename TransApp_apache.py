@@ -113,11 +113,11 @@ STYLE = 'classic'
 
 ACTIONS = [
     Action(id='Transliterate',name="Transliterator",
-           description="Transliterate a Cyrillic name",command="perl " + BASEDIR + "/Transliterator.pl $PARAMETERS",
+           description="Transliterate a Cyrillic name",command="perl " + BASEDIR + "/Transliterator.pl " + BASEDIR + " $PARAMETERS",
            mimetype="text/plain",
            parameters=[
                StringParameter(id='x',name="Input"),
-#               IntegerParameter(id='y',name="Value 2"),
+               #StringParameter(id='y',name="BASEDIR"),
                ])
     ]
 

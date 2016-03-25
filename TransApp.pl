@@ -17,7 +17,8 @@ use Getopt::Std;
 # OPTIONS
 getopts('a:b:c:d:e:f:i:j:k:l:m:n:o:p:q:r:s:t:');
 
-print STDERR "TICCL_OPTS: a: $opt_a b: $opt_b c: $opt_c d: $opt_d e: $opt_e f: $opt_f g: $opt_g h: $opt_h i: $opt_i j: $opt_j k: $opt_k l: $opt_l m: $opt_m n: $opt_n o: $opt_o p: $opt_p q: $opt_q r: $opt_r s: $opt_s t: $opt_t u: $opt_u v: $opt_v w: $opt_w x: $opt_x y: $opt_y z: $opt_z\n";
+#print STDERR "TICCL_OPTS: a: $opt_a b: $opt_b c: $opt_c d: $opt_d e: $opt_e f: $opt_f g: $opt_g h: $opt_h i: $opt_i j: $opt_j k: $opt_k l: $opt_l m: $opt_m n: $opt_n o: $opt_o p: $opt_p q: $opt_q r: $opt_r s: $opt_s t: $opt_t u: $opt_u v: $opt_v w: $opt_w x: $opt_x y: $opt_y z: $opt_z\n";
+print STDERR "TICCL_OPTS: a: $opt_a b: $opt_b c: $opt_c d: $opt_d e: $opt_e f: $opt_f g: $opt_g h: $opt_h i: $opt_i j: $opt_j k: $opt_k l: $opt_l m: $opt_m n: $opt_n o: $opt_o p: $opt_p q: $opt_q r: $opt_r s: $opt_s t: $opt_t\n";
 
 $ROOTDIR = $opt_a;
 $TOOLDIR = $opt_b;
@@ -40,7 +41,7 @@ $interlang = $opt_r;
 $targetlang = $opt_s;
 $inputlist = $opt_t; 
 
-$tocorpusfoci = $prefix . '.toanahash.tsv';  ##Was bij onze testen file met anagramwaarden voor de fociwoorden. Moet 1 string zijn die nog moet omgezet worden door TICCL-anahash!! De anagramwaarde moet naar een bestandje waarnaar $corpusfoci verwijst
+$tocorpusfoci = $OUTPUTDIR . $prefix . '.toanahash.tsv';  ##Was bij onze testen file met anagramwaarden voor de fociwoorden. Moet 1 string zijn die nog moet omgezet worden door TICCL-anahash!! De anagramwaarde moet naar een bestandje waarnaar $corpusfoci verwijst
 
 open(FOCI, ">$tocorpusfoci") || die "Could not at all open $tocorpusfoci: $!\n";
 
@@ -49,20 +50,18 @@ while ($listinput = <I>) {
      $originput = $listinput;
      chomp $listinput;
      $listinput =~ s/ +/_/g;
-     #$query = $listinput;
-     #$listinput =~ s/$/\t1/g;
      
      open(IN, ">$OUTPUTDIR/deaccent.txt");
      print IN "$listinput\n";
-     #close IN;
+
      $listinput = `$ROOTDIR/Accent.flex <$OUTPUTDIR/deaccent.txt`;
-     ## $listinput needs chomping???
+
      print IN "2: $listinput\n";
-     #close IN;
+
      chomp $listinput;
      $query = $listinput; 
      $listinput =~ s/$/\t1/g;
-     #print FOCI "$listinput\n";
+
      print FOCI "$listinput"; 
      print IN "3: $listinput Q: $query\n";
      close IN;
@@ -315,15 +314,17 @@ $anahash = $tocorpusfoci . '.anahash';
 ##}
 ##print factorial(6)
 ##-------
+
 open(V, $corpusfoci) || die "Couldn't HERE L306 open $corpusfoci: $!\n";
 while ($value = <V>) {
      chomp $value;
-$anaInput = $value;
+$$anaInput = $value;
 }
 $anaPunct = 10000000000;
 $divisor = 10510100501;
 
 $check = $anaInput % $divisor;
+
 if (($check != 0) and ($check != $anaPunct)){
 print STDERR "RUN_TICCL-indexerNT: input: $anahash > $charconfus > $corpusfoci > $confuslist\n";
 `$TOOLDIR/TICCL-indexerNT -t $threads --hash $anahash --charconf $charconfus --foci $corpusfoci -o $confuslist`;
