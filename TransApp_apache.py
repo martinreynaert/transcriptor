@@ -48,6 +48,7 @@ if hostname == 'ticclops.uvt.nl' or hostname == 'black.uvt.nl':
     URLPREFIX = 'transapp'
     #BASEDIR = '/exp2/mre/ticclops/'
     BASEDIR = '/opensonar/TransApp/'
+    TICCLTOOLS = '/exp/sloot/usr/local/bin/'
 elif 'VIRTUAL_ENV' in os.environ:
     # Virtual Environment (LaMachine)
     ROOT = os.environ['VIRTUAL_ENV'] + "/transcriptor.clam/"
@@ -165,7 +166,7 @@ PROFILES = [
 #
 
 #COMMAND = BASEDIR + "TransApp-wrapper.pl $DATAFILE $STATUSFILE $OUTPUTDIRECTORY " + BASEDIR
-COMMAND = BASEDIR +  "TransApp-wrapper.pl $PARAMETERS " + BASEDIR + " $INPUTDIRECTORY $OUTPUTDIRECTORY $STATUSFILE $PROJECT"
+COMMAND = BASEDIR +  "TransApp-wrapper.pl $PARAMETERS " + BASEDIR + " $INPUTDIRECTORY $OUTPUTDIRECTORY " + TICCLTOOLS + " $STATUSFILE $PROJECT"
 #COMMAND = BASEDIR +  "TransApp-wrapper.pl"
 
 #The parameters are subdivided into several groups. In the form of a list of (groupname, parameters) tuples. The parameters are a list of instances from common/parameters.py
