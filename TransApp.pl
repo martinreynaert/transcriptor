@@ -41,6 +41,10 @@ $interlang = $opt_r;
 $targetlang = $opt_s;
 $inputlist = $opt_t; 
 
+if ($TOOLDIR =~ /^N$/){
+$TOOLDIR = ();
+}
+
 $tocorpusfoci = $OUTPUTDIR . $prefix . '.toanahash.tsv';  ##Was bij onze testen file met anagramwaarden voor de fociwoorden. Moet 1 string zijn die nog moet omgezet worden door TICCL-anahash!! De anagramwaarde moet naar een bestandje waarnaar $corpusfoci verwijst
 
 open(FOCI, ">$tocorpusfoci") || die "Could not at all open $tocorpusfoci: $!\n";

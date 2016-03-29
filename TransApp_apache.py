@@ -60,7 +60,7 @@ elif 'VIRTUAL_ENV' in os.environ:
         HOST = "webservices-lst.science.ru.nl"
         URLPREFIX = 'transcriptor'
         BASEDIR = '/scratch2/www/webservices-lst/live/repo/transcriptor/'
-        TICCLTOOLS = ""
+        TICCLTOOLS = "N"
         if not 'CLAMTEST' in os.environ:
             ROOT = "/scratch2/www/webservices-lst/live/writable/transcriptor/"
             if 'CLAMSSL' in os.environ:
