@@ -23,7 +23,7 @@ print STDERR "TICCL_OPTS: a: $opt_a b: $opt_b c: $opt_c d: $opt_d e: $opt_e f: $
 $ROOTDIR = $opt_a;
 $TOOLDIR = $opt_b;
 $INPUTDIR = $opt_c;
-$OUTPUTDIR = $opt_d;
+ = $opt_d;
 $alph = $opt_e;
 $charconfus = $opt_f;
 #$anahash = $opt_g;
@@ -266,7 +266,7 @@ print STDERR "LANGSEEN2: $langcode $langseen{$langcode}\n";
 print STDERR "TYPES: 0: $type0 1: $type1 2: $type2 3: $type3 4: $type4\n";
 
 ##We name and open the tsv file
-$tsv = $prefix . '.tsv';
+$tsv = $OUTPUTDIR . $prefix . '.tsv';
 open (TSV, ">$tsv");
 #binmode(TSV, ":utf8");
 
