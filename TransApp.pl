@@ -23,7 +23,7 @@ print STDERR "TICCL_OPTS: a: $opt_a b: $opt_b c: $opt_c d: $opt_d e: $opt_e f: $
 $ROOTDIR = $opt_a;
 $TOOLDIR = $opt_b;
 $INPUTDIR = $opt_c;
- = $opt_d;
+$OUTPUTDIR = $opt_d;
 $alph = $opt_e;
 $charconfus = $opt_f;
 #$anahash = $opt_g;
