@@ -294,8 +294,10 @@ foreach $lang (keys %{ $JRCnames{$JRCname}{$ID} }) {
  close TSV;
 ##Aanpassen zodat de nieuwe frqlist opgenomen wordt. $tocorpusfoci blijft input. Aanpassen zodat de input alleen naam/namen hoeft te zijn!
 ##We calculate the anagram value for the input in $tocorpusfoci
-print STDERR "RUN_TICCL-anahash: $tocorpusfoci\n";
+print STDERR "RUN_TICCL-anahash: ALPH: $alph BACKGROUND: $tsv ARTIFRQ: $artifrq TOCORPUSFOCI: $tocorpusfoci\n";
 #`$TOOLDIR/TICCL-anahash --alph $alph --artifrq 100000000000 $tocorpusfoci`;
+$which = `which TICCL-anahash`;
+print STDERR "WHICH: $which\n";
 `$TOOLDIR/TICCL-anahash --alph $alph --background $tsv --artifrq $artifrq $tocorpusfoci`;
 ##/exp/sloot/usr/local/bin/TICCL-anahash --alph JRCnames.LexicalSenses.3cols.UTF8.14.OnlyWithSenseIDs.NamesOnlyOnePerLine.txt.lc.chars --artifrq 2 input.lst
 
