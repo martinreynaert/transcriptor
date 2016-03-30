@@ -13,17 +13,13 @@ my $name = $ARGV[1];
 my $rootdir; 
 BEGIN { $rootdir = $ARGV[0];}
 use lib "$rootdir/lib";
-my $tmppath;
-BEGIN { $tmppath = $ARGV[2];}
+my $tmpdir = $ARGV[2];
 use Transliterator::HTMLFactory;
 my $debug = ();
 $debug = $ARGV[3] if (defined $ARGV[3]);
 
-#my $tmppath = $rootdir . '/projects/actions';
-
-open(IN2, ">$temppath/SEEINPUT.txt");
-#open(IN2, ">SEEINPUTNOW.txt");
-print IN2 "IN: $name ROOT: $rootdir TMP: $tmppath\n";
+open(IN2, ">$tmpdir/SEEINPUT.txt");
+print IN2 "IN: $name ROOT: $rootdir TMP: $tmpdir\n";
 
 #my $var;
 #BEGIN { $var = "/home/usr/bibfile"; }
@@ -31,9 +27,9 @@ print IN2 "IN: $name ROOT: $rootdir TMP: $tmppath\n";
 
 
 
-open(IN3, ">$tmppath/SEEINPUT2.txt");
+open(IN3, ">$tmpdir/SEEINPUT2.txt");
 
-open(TEST, ">>$tmppath/TEST.out");
+open(TEST, ">>$tmpdir/TEST.out");
 
 my $type = 'P';
 if ($name =~ /_LOC$/) {
@@ -65,12 +61,12 @@ close IN2;
 
 # Save input
 if ($name =~ /[A-Za-z]/){
-open(IN, ">$tmppath/$input2.txt");
+open(IN, ">$tmpdir/$input2.txt");
 print IN "$name\n";
 close IN;
 }
 else {
-    open(IN, ">$tmppath/deaccent.txt");
+    open(IN, ">$tmpdir/deaccent.txt");
 
     $name =~ s/(^|[ -_\/])(Алена)([^А-Я,а-я]|$|[ -_\/,.])/$1Алёна$3/gi;
     $name =~ s/(^|[ -_\/])(Артем)([^и]|$|[ -_\/,.])/$1Артём$3/gi;
@@ -187,7 +183,7 @@ else {
     
     print IN "$name\n";
     close IN;
-`$rootdir/Accent.flex <$tmppath/deaccent.txt >$tmppath/$input.txt`;     
+`$rootdir/Accent.flex <$tmpdir/deaccent.txt >$tmpdir/$input.txt`;     
 }
 
 # Read Taalunie file
@@ -214,9 +210,9 @@ my $effe = ();
 # Run all transliterators and add output to generator
 if ($name =~ /[A-Za-z]/){
     
-    open(IN3, ">$tmppath/$input.txt");
-    `$rootdir/ENG-RUS.flex <$tmppath/$input2.txt >$tmppath/SEEINPUT2.txt`;
-    open(INNEW, "$tmppath/SEEINPUT2.txt");
+    open(IN3, ">$tmpdir/$input.txt");
+    `$rootdir/ENG-RUS.flex <$tmpdir/$input2.txt >$tmpdir/SEEINPUT2.txt`;
+    open(INNEW, "$tmpdir/SEEINPUT2.txt");
 	while (my $in2 = <INNEW>) {
 	    #print STDERR "IN2a: $name >> $in2";
 	    ##Als een naam op Е niet met Ye wordt getranslitereerd (Evgeny), dan hier fixen
@@ -294,7 +290,7 @@ if ($name =~ /[A-Za-z]/){
     close IN;
   
 ###NLD
-      $nlpop = `$rootdir/RU-NL.populair.flex <$tmppath/$input.txt`;
+      $nlpop = `$rootdir/RU-NL.populair.flex <$tmpdir/$input.txt`;
       chomp $nlpop;
   
       #$nlpop =~ s/ij$/i/i;
@@ -471,7 +467,7 @@ if ($name =~ /[A-Za-z]/){
   push @output, $generator->addOutput('populair', $nlpop);    
 
 ##ENG
-      $eng = `$rootdir/RU-EN.populair-engels.flex <$tmppath/$input.txt`;
+      $eng = `$rootdir/RU-EN.populair-engels.flex <$tmpdir/$input.txt`;
       chomp $eng;  
       #$eng =~ s/yy/y/i;
     $eng =~ s/^YE/Ye/;
@@ -507,11 +503,11 @@ if ($name =~ /[A-Za-z]/){
 
     ###GER
 
-    open(RUS, "$tmppath/$input.txt");    
+    open(RUS, "$tmpdir/$input.txt");    
     my $namerus = <RUS>; 
     close RUS;
     
-      $germanpop = `$rootdir/RU-DE.populair-duits.flex <$tmppath/$input.txt`;
+      $germanpop = `$rootdir/RU-DE.populair-duits.flex <$tmpdir/$input.txt`;
       chomp $germanpop;
       #$ger =~ s/yi$/i/i;
       #$ger =~ s/yj/j/i;
@@ -611,7 +607,7 @@ if ($name =~ /[A-Za-z]/){
 	        push @output, $generator->addOutput('rijbewijs', '<span class="na_field">Not applicable</span>');
 	
 } else {
-    my $nlpop = `$rootdir/RU-NL.populair.flex <$tmppath/$input.txt`;
+    my $nlpop = `$rootdir/RU-NL.populair.flex <$tmpdir/$input.txt`;
     $nlpop =~ s/aè/aë/g;
     $nlpop =~ s/Aè/Aë/g;
     $nlpop =~ s/AÈ/AË/g;
@@ -707,7 +703,7 @@ if ($name =~ /[A-Za-z]/){
 
     push @output, $generator->addOutput('populair', "$nlpop");    
 
-	my $wiki = `$rootdir/RU-NL.wikipedia.flex <$tmppath/$input.txt`;
+	my $wiki = `$rootdir/RU-NL.wikipedia.flex <$tmpdir/$input.txt`;
     $wiki =~ s/aè/aë/g;
     $wiki =~ s/Aè/Aë/g;
     $wiki =~ s/AÈ/AË/g;
@@ -801,7 +797,7 @@ if ($name =~ /[A-Za-z]/){
     
 	push @output, $generator->addOutput('wikipedia', "$wiki");
 
-	my $englishpop = `$rootdir/RU-EN.populair-engels.flex <$tmppath/$input.txt`;
+	my $englishpop = `$rootdir/RU-EN.populair-engels.flex <$tmpdir/$input.txt`;
 
         #Arkady_Gaidar >< Arkady_Gaydar [-]
 	#Igor_Grigoryev >< Igor_Grigorev [-]
@@ -852,7 +848,7 @@ if ($name =~ /[A-Za-z]/){
 	
         push @output, $generator->addOutput('populair-engels', "$englishpop");
 	
-        my $germanpop = `$rootdir/RU-DE.populair-duits.flex <$tmppath/$input.txt`;
+        my $germanpop = `$rootdir/RU-DE.populair-duits.flex <$tmpdir/$input.txt`;
 
 	$germanpop =~ s/Ks|KS/X/g;
         $germanpop =~ s/kS|ks/x/g;
@@ -884,16 +880,16 @@ if ($name =~ /[A-Za-z]/){
 	
 	push @output, $generator->addOutput('populair-duits', "$germanpop");
 
-        my $ALA = `$rootdir/RU-EN.ALA-LC.flex <$tmppath/$input.txt`;
+        my $ALA = `$rootdir/RU-EN.ALA-LC.flex <$tmpdir/$input.txt`;
         push @output, $generator->addOutput('ALA-LC', "$ALA"); 
 
-        my $ALAs = `$rootdir/RU-EN.ALA-LC-simpel.flex <$tmppath/$input.txt`;
+        my $ALAs = `$rootdir/RU-EN.ALA-LC-simpel.flex <$tmpdir/$input.txt`;
 	push @output, $generator->addOutput('ALA-LC-simpel', "$ALAs");
 
-        my $science = `$rootdir/RU-EN.wetenschappelijk.flex <$tmppath/$input.txt`;
+        my $science = `$rootdir/RU-EN.wetenschappelijk.flex <$tmpdir/$input.txt`;
         push @output, $generator->addOutput('wetenschappelijk', "$science");
 
-        my $BGN = `$rootdir/RU-EN.BGN-PCGN.flex <$tmppath/$input.txt`;
+        my $BGN = `$rootdir/RU-EN.BGN-PCGN.flex <$tmpdir/$input.txt`;
         
         #Natal’ya_Alekseyevna >< Natal’ya_Alekseevna [-]
 	#Igor’_Grigor’yev >< Igor’_Grigor’ev [-]
@@ -926,7 +922,7 @@ if ($name =~ /[A-Za-z]/){
     
         push @output, $generator->addOutput('BGN-PCGN', "$BGN");
 
-        my $BGNs = `$rootdir/RU-EN.BGN-PCGN-simpel.flex <$tmppath/$input.txt`;
+        my $BGNs = `$rootdir/RU-EN.BGN-PCGN-simpel.flex <$tmpdir/$input.txt`;
 
     $BGNs =~ s/iy/y/gi;
     $BGNs =~ s/yy/y/gi;
@@ -944,34 +940,34 @@ if ($name =~ /[A-Za-z]/){
     $BGNs =~ s/Novyye/Novye/;
         push @output, $generator->addOutput('BGN-PCGN-simpel', "$BGNs");
 	
-        my $brit = `$rootdir/RU-EN.british-standard.flex <$tmppath/$input.txt`;
+        my $brit = `$rootdir/RU-EN.british-standard.flex <$tmpdir/$input.txt`;
         push @output, $generator->addOutput('british-standard', "$brit"); 
 
-        my $gost83 = `$rootdir/RU-EN.GOST-1983.flex <$tmppath/$input.txt`;			
+        my $gost83 = `$rootdir/RU-EN.GOST-1983.flex <$tmpdir/$input.txt`;			
         push @output, $generator->addOutput('GOST-1983', "$gost83");		     
 	
-        my $gost = `$rootdir/RU-EN.GOST-2000b.flex <$tmppath/$input.txt`;
+        my $gost = `$rootdir/RU-EN.GOST-2000b.flex <$tmpdir/$input.txt`;
 	$gost =~ s/(CZ)([IEYJ,ieyj])/C$2/g;
 	$gost =~ s/(Cz)([IEYJ,ieyj])/C$2/g;
 	$gost =~ s/(cz)([ieyj,ieyj])/c$2/g;
 	push @output, $generator->addOutput('GOST-2000b', "$gost");
 
-	my $gost04 = `$rootdir/RU-EN.GOST-2004.flex <$tmppath/$input.txt`;
+	my $gost04 = `$rootdir/RU-EN.GOST-2004.flex <$tmpdir/$input.txt`;
         $gost04 =~ s/Dzhy/Dzh/;
 	push @output, $generator->addOutput('GOST-2004', "$gost04");
 
-        my $gost06 = `$rootdir/RU-EN.GOST_R_52535.1-2006.flex <$tmppath/$input.txt`;
+        my $gost06 = `$rootdir/RU-EN.GOST_R_52535.1-2006.flex <$tmpdir/$input.txt`;
         push @output, $generator->addOutput('GOST_R_52535.1-2006', "$gost06");
 
-        my $ICAO = `$rootdir/RU-EN.ICAO.flex <$tmppath/$input.txt`;
+        my $ICAO = `$rootdir/RU-EN.ICAO.flex <$tmpdir/$input.txt`;
         $ICAO =~ s/IA/Ia/g;
         $ICAO =~ s/IU/Iu/g;
 	push @output, $generator->addOutput('ICAO', "$ICAO");
 
-	my $iso = `$rootdir/RU-EN.ISO9-1995.flex <$tmppath/$input.txt`;
+	my $iso = `$rootdir/RU-EN.ISO9-1995.flex <$tmpdir/$input.txt`;
     push @output, $generator->addOutput('ISO9-1995', "$iso");
 
-	my $pp2010 = `$rootdir/RU-EN.paspoort-1997-2010.flex <$tmppath/$input.txt`;
+	my $pp2010 = `$rootdir/RU-EN.paspoort-1997-2010.flex <$tmpdir/$input.txt`;
 
 	$pp2010 =~ s/(iy)([^A-Z,a-z]|$|,)/y$2/gi;
         $pp2010 =~ s/'ev/yev/;
@@ -1013,7 +1009,7 @@ if ($name =~ /[A-Za-z]/){
 
 	push @output, $generator->addOutput('paspoort-1997-2010', "$pp2010");
 
-    my $ppUSSR = `$rootdir/RU-EN.paspoort-ussr.flex <$tmppath/$input.txt`;
+    my $ppUSSR = `$rootdir/RU-EN.paspoort-ussr.flex <$tmpdir/$input.txt`;
     
         #Igor_Grigoriev >< Igor_Grigorev [-]
 	#Victor_Kozlov >< Viktor_Kozlov [-]
@@ -1040,7 +1036,7 @@ if ($name =~ /[A-Za-z]/){
     $ppUSSR =~ s/Vassilev/Vassiliev/g;
         push @output, $generator->addOutput('paspoort-ussr', "$ppUSSR");
 
-	my $rij = `$rootdir/RU-EN.rijbewijs.flex <$tmppath/$input.txt`;
+	my $rij = `$rootdir/RU-EN.rijbewijs.flex <$tmpdir/$input.txt`;
         $rij =~ s/E\./Ye\./g;
         #$rij =~ s/^E/Ye/g;
         #$rij =~ s/_E/_Ye/g;
