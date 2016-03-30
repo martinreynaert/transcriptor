@@ -7,13 +7,13 @@ if (!@ARGV) {
 	die "No input.";
 }
 
-my $name = $ARGV[1];
+my $name = $ARGV[2];
 #my $rootdir = $ARGV[0];
 #my $rootdir = '/opensonar/TransApp/';
 my $rootdir; 
 BEGIN { $rootdir = $ARGV[0];}
 use lib "$rootdir/lib";
-my $tmpdir = $ARGV[2];
+my $tmpdir = $ARGV[1];
 use Transliterator::HTMLFactory;
 my $debug = ();
 $debug = $ARGV[3] if (defined $ARGV[3]);
