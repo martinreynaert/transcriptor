@@ -298,7 +298,7 @@ print STDERR "RUN_TICCL-anahash: ALPH: $alph BACKGROUND: $tsv ARTIFRQ: $artifrq 
 #`$TOOLDIR/TICCL-anahash --alph $alph --artifrq 100000000000 $tocorpusfoci`;
 $which = `which TICCL-anahash`;
 print STDERR "WHICH: $which\n";
-`${TOOLDIR/}TICCL-anahash --alph $alph --background $tsv --artifrq $artifrq $tocorpusfoci`;
+`${TOOLDIR}TICCL-anahash --alph $alph --background $tsv --artifrq $artifrq $tocorpusfoci`;
 ##/exp/sloot/usr/local/bin/TICCL-anahash --alph JRCnames.LexicalSenses.3cols.UTF8.14.OnlyWithSenseIDs.NamesOnlyOnePerLine.txt.lc.chars --artifrq 2 input.lst
 
 ##We use indexerNT
@@ -333,15 +333,15 @@ $check = $anaInput % $divisor;
 
 if (($check != 0) and ($check != $anaPunct)){
 print STDERR "RUN_TICCL-indexerNT: input: $anahash > $charconfus > $corpusfoci > $confuslist\n";
-`${TOOLDIR/}TICCL-indexerNT -t $threads --hash $anahash --charconf $charconfus --foci $corpusfoci -o $confuslist`;
+`${TOOLDIR}TICCL-indexerNT -t $threads --hash $anahash --charconf $charconfus --foci $corpusfoci -o $confuslist`;
 
 print STDERR "RUN_TICCL-LDcalc: $out > $confuslist.indexNT > $anahash > $frqlist > $alph > $LD > $threads > $artifrq > $out.ldcalc\n";
-`${TOOLDIR/}TICCL-LDcalc --index $confuslist.indexNT --hash $anahash --clean $frqlist --alph $alph --LD $LD -t $threads --artifrq $artifrq -o $out.ldcalc`;
+`${TOOLDIR}TICCL-LDcalc --index $confuslist.indexNT --hash $anahash --clean $frqlist --alph $alph --LD $LD -t $threads --artifrq $artifrq -o $out.ldcalc`;
 
 $outranked = $out . '.ranked';
 print STDERR "RUN_TICCL-rank1: $out OUTRANKED: $outranked\n";
 #`$TOOLDIR/TICCL-rank -t $threads --alph $alph --charconf $charconfus -o $outranked --debugfile $out.debug.ranked --artifrq $artifrq --clip $rank --skipcols=10,11 $out.ldcalc 2>$out.RANKartifrq.stderr`;
-`${TOOLDIR/}TICCL-rank -t $threads --alph $alph --charconf $charconfus -o $outranked --debugfile $out.debug.ranked --artifrq $artifrq --clip $rank --skipcols=10,11 $out.ldcalc`;
+`${TOOLDIR}TICCL-rank -t $threads --alph $alph --charconf $charconfus -o $outranked --debugfile $out.debug.ranked --artifrq $artifrq --clip $rank --skipcols=10,11 $out.ldcalc`;
 
 ##Parse TICCL output
 open(T, $outranked) || die "Couldn't open OUTRANKED $outranked: $!\n";
