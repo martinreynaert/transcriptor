@@ -103,7 +103,7 @@ PROJECTS_PUBLIC = False
 REQUIREMEMORY = 10
 
 #Maximum load average at which processes are still started (first number reported by 'uptime')
-#MAXLOADAVG = 1.0
+MAXLOADAVG = 20.0
 #language = os.environ['language']
 
 # ======== WEB-APPLICATION STYLING =============
