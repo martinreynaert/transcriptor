@@ -9,7 +9,6 @@
 "г" printf("g");
 "Д" printf("D");
 "д" printf("d");
-"_Е" printf("_Ye");
 "Е" printf("E");
 "е" printf("e");
 "Ё" printf("Ye");

@@ -554,12 +554,12 @@ if ($name =~ /[A-Za-z]/){
     $germanpop =~ s/rossiysk/rossisk/;
     $germanpop =~ s/Oejelen/Uelen/;
     $germanpop =~ s/Buti$/Buty/;
-    $germanpop =~ s/Mussiykjongiykote/Mussikjongikote/;
+    $germanpop =~ s/Mussiykongiykote/Mussikongikote/;
     $germanpop =~ s/^Ojen/Oen/;
     $germanpop =~ s/mnogoljudni/mnogoljudny/;
     $germanpop =~ s/wesnuschtschati/wesnuschtschaty/;
     $germanpop =~ s/agenztwo/agentstwo/;
-    #$germanpop =~ s///;
+    $germanpop =~ s/è/e/;
     
         #Natalja_Magnitskaja >< Natalja_Magnizkaja [-]
 	#Nikolai_Podgorny >< Nikolai_Podgorni [-]
@@ -583,12 +583,12 @@ if ($name =~ /[A-Za-z]/){
     
       push @output, $generator->addOutput('populair-duits', $germanpop);  
 
-#      if ($debug =~ /D/){
-#      push @debug, $nlpop;
-#      push @debug, $eng;  
-#      push @debug, $germanpop;
-#      print TEST "@debug\n";
-#      }
+      if ($debug =~ /D/){
+      push @debug, $nlpop;
+      push @debug, $eng;  
+      push @debug, $germanpop;
+      print TEST "@debug\n";
+      }
 
                 push @output, $generator->addOutput('ALA-LC', '<span class="na_field">Not applicable</span>');
 	        push @output, $generator->addOutput('ALA-LC-simpel', '<span class="na_field">Not applicable</span>');
@@ -643,9 +643,6 @@ if ($name =~ /[A-Za-z]/){
     $nlpop =~ s/YÈ/YË/g;
     $nlpop =~ s/yÈ/yë/g;
 
-    $nlpop =~ s/è/e/g;
-    $nlpop =~ s/È/E/g;
-
     $nlpop =~ s/IJE/IË/g;
     $nlpop =~ s/ije/ië/g;
     $nlpop =~ s/iJE/ië/g;
@@ -688,6 +685,12 @@ if ($name =~ /[A-Za-z]/){
     $nlpop =~ s/aev$/ajev/i;
     $nlpop =~ s/aev_/ajev_/i;
     $nlpop =~ s/E\./Je\./i;
+    $nlpop =~ s/^E/Je/; ##NEW
+    $nlpop =~ s/_E/_Je/; ##NEW
+
+    $nlpop =~ s/è/e/g; ##MOVED
+    $nlpop =~ s/È/E/g; ##MOVED
+
     $nlpop =~ s/lev$/ljev/i;
 
     $nlpop =~ s/ovljev$/ovlev/i;
@@ -827,7 +830,7 @@ if ($name =~ /[A-Za-z]/){
     $englishpop =~ s/Mayya/Maiya/g;
     $englishpop =~ s/Vasilev/Vasilyev/g;
     $englishpop =~ s/Afanasev/Afanasyev/g;
-    $englishpop =~ s/Nayem/Naiyem/g;
+    $englishpop =~ s/Naiem/Naiyem/g;
     $englishpop =~ s/Rimskiy/Rimsky/g;
     $englishpop =~ s/Novyye/Novye/g;
     $englishpop =~ s/Kuyyogan/Kuiyogan/g;
@@ -836,6 +839,13 @@ if ($name =~ /[A-Za-z]/){
     $englishpop =~ s/Khrushchyov/Khrushchev/gi;
     $englishpop =~ s/E\./Ye\./g;
     $englishpop =~ s/Evtu/Yevtu/g;
+
+        #Mustafa_Naiyem >< Mustafa_Naiem [-]
+	#Novorossiysk >< Novorossysk [-]
+	#Musiykongiykote >< Musykongykote [-]
+    
+    $englishpop =~ s/rossysk/rossiysk/g; ##NEW
+    $englishpop =~ s/Musykongykote/Musiykongiykote/g; ##NEW
 
         #Igor_Grigoryev >< Igor_Grigorev [-]
 	#Vasily_Piskaryov >< Vasily_Piskarev [-]
@@ -865,6 +875,12 @@ if ($name =~ /[A-Za-z]/){
     $germanpop =~ s/assew$/asjew/;
     $germanpop =~ s/sjow$/schow/;
     $germanpop =~ s/E\./Je./;
+    $germanpop =~ s/^E/Je/; ##NEW
+    $germanpop =~ s/_E/_Je/; ##NEW
+
+    $germanpop =~ s/è/e/g; ##MOVED
+    $germanpop =~ s/È/E/g; ##MOVED
+
     $germanpop =~ s/Dzj/Dsch/;
     $germanpop =~ s/Ilitsch/Iljitsch/;
     $germanpop =~ s/ilew$/iljew/;
@@ -918,13 +934,18 @@ if ($name =~ /[A-Za-z]/){
     $BGN =~ s/Kuyëgan/Kuyyëgan/;
     $BGN =~ s/Nayem/Nayyem/;
     $BGN =~ s/Ë\./Yë\./;
+    $BGN =~ s/E\./Ye\./; ##NEW
     $BGN =~s/Uëg/Uyyëg/;
     
         push @output, $generator->addOutput('BGN-PCGN', "$BGN");
 
         my $BGNs = `$rootdir/RU-EN.BGN-PCGN-simpel.flex <$tmpdir/$input.txt`;
 
-    $BGNs =~ s/iy/y/gi;
+        #Kseniya_Lyapina >< Ksenya_Lyapina [-]
+	#Nataliya_Alekseyevna_Narochnitskaya >< Natalya_Alekseyevna_Narochnitskaya [-]
+
+    $BGNs =~ s/ya_/ja_/; ##NEW  
+    $BGNs =~ s/iy/y/gi; ## if ($BGNs !~ /iya$/); ##ADAPTED
     $BGNs =~ s/yy/y/gi;
     $BGNs =~ s/yi/y/gi;
     $BGNs =~ s/([aeiou])ev/$1yev/;
@@ -938,6 +959,19 @@ if ($name =~ /[A-Za-z]/){
     $BGNs =~ s/Nayyem/Nayem/;
     $BGNs =~ s/rossysk/rossiysk/;
     $BGNs =~ s/Novyye/Novye/;
+    $BGNs =~ s/E\./Ye\./; ##NEW 
+
+    $BGNs =~ s/ja_/ya_/; ##NEW
+    $BGNs =~ s/yya_/ya_/; ##NEW
+    #$BGNs =~ s/Natalya/Nataliya/; ##NEW
+    $BGNs =~ s/chyov$/chev/; ##NEW
+    $BGNs =~ s/Musykongykote/Musiykongiykote/; ##NEW
+    
+        #Kseniya_Lyapina >< Ksenya_Lyapina [-]
+	#Arkady_Bashlachev >< Arkady_Bashlachyov [-]
+	#Nataliya_Alekseyevna_Narochnitskaya >< Natalya_Alekseyevna_Narochnitskaya [-]
+	#Musiykongiykote >< Musykongykote [-]
+   
         push @output, $generator->addOutput('BGN-PCGN-simpel', "$BGNs");
 	
         my $brit = `$rootdir/RU-EN.british-standard.flex <$tmpdir/$input.txt`;
@@ -954,6 +988,17 @@ if ($name =~ /[A-Za-z]/){
 
 	my $gost04 = `$rootdir/RU-EN.GOST-2004.flex <$tmpdir/$input.txt`;
         $gost04 =~ s/Dzhy/Dzh/;
+    $gost04 =~ s/([aeiou'’])ev/$1yev/;
+    $gost04 =~ s/skoe$/skoye/;
+    $gost04 =~ s/skoe_/skoye_/;
+    $gost04 =~ s/vye$/vyye/;
+    $gost04 =~ s/vye_/vyye_/;
+    $gost04 =~ s/Ye\./Yo\./;
+    $gost04 =~ s/Uyeg/Uyog/;
+    $gost04 =~ s/E\./Ye\./;
+    $gost04 =~ s/chyev$/chev/;
+    $gost04 =~ s/chyev_/chev_/;
+    
 	push @output, $generator->addOutput('GOST-2004', "$gost04");
 
         my $gost06 = `$rootdir/RU-EN.GOST_R_52535.1-2006.flex <$tmpdir/$input.txt`;
@@ -1004,8 +1049,11 @@ if ($name =~ /[A-Za-z]/){
 	$pp2010 =~ s/Yuliya/Yulia/gi;
 	$pp2010 =~ s/Yakov/Iakov/gi;
 
+
+    
         $pp2010 =~ s/yy/y/g;
-	#close TEST;
+
+        $pp2010 =~ s/Maya/Mayya/g; ##NEW
 
 	push @output, $generator->addOutput('paspoort-1997-2010', "$pp2010");
 
@@ -1036,10 +1084,19 @@ if ($name =~ /[A-Za-z]/){
     $ppUSSR =~ s/Vassilev/Vassiliev/g;
         push @output, $generator->addOutput('paspoort-ussr', "$ppUSSR");
 
-	my $rij = `$rootdir/RU-EN.rijbewijs.flex <$tmpdir/$input.txt`;
+    my $rij = `$rootdir/RU-EN.rijbewijs.flex <$tmpdir/$input.txt`;
+    $rij =~ s/([aeiou'’])ev/$1yev/;
+    $rij =~ s/skoe$/skoye/;
+    $rij =~ s/skoe_/skoye_/;
+    $rij =~ s/vye$/vyye/;
+    $rij =~ s/vye_/vyye_/;
+    $rij =~ s/Ye\./Yo\./;
+    $rij =~ s/Uyeg/Uyog/;
+    $rij =~ s/E\./Ye\./;
+    $rij =~ s/chyev$/chev/;
+    $rij =~ s/chyev_/chev_/;
+    ##ABOVE NEW
         $rij =~ s/E\./Ye\./g;
-        #$rij =~ s/^E/Ye/g;
-        #$rij =~ s/_E/_Ye/g;
         $rij =~ s/Il’ich/Il’yich/g;
         $rij =~ s/Dzhy/Dzh/g;
 

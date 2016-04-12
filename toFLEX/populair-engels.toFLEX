@@ -1,5 +1,4 @@
 %%
-"\u0301" printf("");
 "А" printf("A");
 "а" printf("a");
 "Б" printf("B");
@@ -60,6 +59,9 @@
 "ж" printf("zh");
 "З" printf("Z");
 "з" printf("z");
+
+"ИЙ" printf("Y");
+"ий" printf("y");
 "ИЙ"$ printf("Y");
 "ий"$ printf("y");
 "ИЙ_" printf("Y_");
@@ -73,6 +75,8 @@
 "ЫЙ " printf("Y ");
 "ый " printf("y ");
 
+"АЙ" printf("AI");
+"ай" printf("ai");
 "АЙ"$ printf("AI");
 "ай"$ printf("ai");
 "АЙ_" printf("AI_");
@@ -80,6 +84,8 @@
 "АЙ " printf("AI ");
 "ай " printf("ai ");
 
+"ЯЙ" printf("YAI");
+"яй" printf("yai");
 "ЯЙ"$ printf("YAI");
 "яй"$ printf("yai");
 "ЯЙ_" printf("YAI_");
@@ -87,6 +93,8 @@
 "ЯЙ " printf("YAI ");
 "яй " printf("yai ");
 
+"ЕЙ" printf("EI");
+"ей" printf("ei");
 "ЕЙ"$ printf("EI");
 "ей"$ printf("ei");
 "ЕЙ_" printf("EI_");
@@ -94,6 +102,8 @@
 "ЕЙ " printf("EI ");
 "ей " printf("ei ");
 
+"ЁЙ" printf("YOI");
+"ёй" printf("yoi");
 "ЁЙ"$ printf("YOI");
 "ёй"$ printf("yoi");
 "ЁЙ_" printf("YOI_");
@@ -101,6 +111,8 @@
 "ЁЙ " printf("YOI ");
 "ёй " printf("yoi ");
 
+"ОЙ" printf("OI");
+"ой" printf("oi");
 "ОЙ"$ printf("OI");
 "ой"$ printf("oi");
 "ОЙ_" printf("OI_");
@@ -108,6 +120,8 @@
 "ОЙ " printf("OI ");
 "ой " printf("oi ");
 
+"УЙ" printf("UI");
+"уй" printf("ui");
 "УЙ"$ printf("UI");
 "уй"$ printf("ui");
 "УЙ_" printf("UI_");
@@ -115,6 +129,8 @@
 "УЙ " printf("UI ");
 "уй " printf("ui ");
 
+"ЮЙ" printf("YUI");
+"юй" printf("yui");
 "ЮЙ"$ printf("YUI");
 "юй"$ printf("yui");
 "ЮЙ_" printf("YUI_");
@@ -122,6 +138,8 @@
 "ЮЙ " printf("YUI ");
 "юй " printf("yui ");
 
+"ЭЙ" printf("EI");
+"эй" printf("ei");
 "ЭЙ"$ printf("EI");
 "эй"$ printf("ei");
 "ЭЙ_" printf("EI_");

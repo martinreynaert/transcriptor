@@ -128,8 +128,8 @@
 "ы" printf("y");
 "Ь" printf("");
 "ь" printf("");
-"Э" printf("E");
-"э" printf("e");
+"Э" printf("È");
+"э" printf("è");
 "Ю" printf("Ju");
 "ю" printf("ju");
 "Я" printf("Ja");
