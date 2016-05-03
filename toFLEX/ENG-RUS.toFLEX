@@ -31,12 +31,6 @@
 "H" printf("Х");
 "i" printf("и");
 "I" printf("И");
-"i " printf("й ");
-"i_" printf("й_");
-"i"$ printf("й");
-"I " printf("Й ");
-"I_" printf("Й_");
-"I"$ printf("Й");
 "ja" printf("я");
 "Ja" printf("Я");
 "je" printf("е");

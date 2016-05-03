@@ -8,6 +8,7 @@ if (!@ARGV) {
 }
 
 my $name = $ARGV[2];
+$name =~ s/ /_/g;
 #my $rootdir = $ARGV[0];
 #my $rootdir = '/opensonar/TransApp/';
 my $rootdir; 
@@ -24,8 +25,6 @@ print IN2 "IN: $name ROOT: $rootdir TMP: $tmpdir\n";
 #my $var;
 #BEGIN { $var = "/home/usr/bibfile"; }
 #use lib "$var/lib/";
-
-
 
 open(IN3, ">$tmpdir/SEEINPUT2.txt");
 
@@ -62,6 +61,74 @@ close IN2;
 # Save input
 if ($name =~ /[A-Za-z]/){
 open(IN, ">$tmpdir/$input2.txt");
+
+	## On-Russische letters 
+	## ' en " eruit filteren 
+	$name =~ s/(['\‘\’\ʹ\"\“\”])e/ye/gi;
+	$name =~ s/(['\‘\’\ʹ\"\“\”])ia/ia/gi;
+	$name =~ s/(['\‘\’\ʹ\"\“\”])iu/iu/gi;
+	$name =~ s/(['\‘\’\ʹ\"\“\”])i/yi/gi;
+	$name =~ s/(['\‘\’\ʹ\"\“\”])o/yo/gi;
+	$name =~ s/['\‘\’\ʹ\"\“\”]//g;
+		
+	## tc > ts; maffe paspoorttransliteratie voor ц opvangen; testen op h vanwege combinatie тч (tch)
+	$name =~ s/(t|T)c([^h|^H]|$|[-\/,. ])/$1s$2/g;
+	$name =~ s/(t|T)C([^h|^H]|$|[-\/,. ])/$1S$2/g;
+
+## Suffixen fixen
+## OP 22 DECEMBER HIERONDER skyi/skiy_kii/kyi/kiy_khii/khyi/khiy TOEGEVOEGD
+## OP 29 DECEMBER ский_кий > skий_kий (zo min mogelijk nu al translitereren; ging fout bij Выучейский)
+$name =~ s/(sky|skii|skyi|skiy)($|[-\/_ ])/skий$2/gi; ## Mikhailovsky_Mikhailovskii (niet: Mikhailovski_maar die gaat toch al redelijk goed)
+$name =~ s/(ky|kii|kyi|kiy)($|[-\/_ ])/kий$2/gi; ## Blizky 
+$name =~ s/(khy|khii|khyi|khiy)($|[-\/_ ])/khий$2/gi; ## Vetkhy
+
+## De y en de i: wel of geen й?
+$name =~ s/([aeiou])(y|i)([bvgdzklmnprstfch])/$1й$3/gi; ## Maydan_Maidan_Mikhail_Novorossiisk/Novorossiysk
+$name =~ s/([bvgdzklmnprstfch])(ia)(^$|[^-\/_ ])/$1я$3/gi; ## Viazemsky (maar niet: Akademia; voor gevallen als Daria wordt later gecorrigeerd)
+$name =~ s/([bvgdzklmnprstfch])(iu)(^$|[^-\/_ ])/$1ю$3/gi; ## Liudmila
+
+## TOEGEVOEGD OP 22 DECEMBER
+$name =~ s/(Zv)я(d)/$1ia$2/gi; ## Zvяd > Zviad (handmatige uitzondering op bovengenoemde vervanging)
+$name =~ s/(D)я(n)/$1ia$2/gi; ## Dяn > Dian (handmatige uitzondering op bovengenoemde vervanging)
+$name =~ s/(p)ю(s)/$1iu$2/gi; ## (Gip)pюs > (Gip)pius (handmatige uitzondering op bovengenoemde vervanging)
+
+## EINDE TOEGEVOEGD OP 22 DECEMBER
+
+## N.B. Voor valide leenwoorden met иа (диафрагма) en иу (радиус) wordt niet gecorrigeerd.
+## N.B. Ook Aliona > Алёна wordt niet meegenomen.
+
+## Dit moet Maiya_Mayya_Maiia > Maja bewerkstelligen. Idem: Nayyem_Naiyem > Najem
+$name =~ s/([aeiou])(i|y)(ia|ya)/$1я/gi; 
+$name =~ s/([aeiou])(i|y)(iu|yu)/$1ю/gi; 
+$name =~ s/([aeiou])(i|y)(ie|ye)/$1е/gi; 
+$name =~ s/([aeiou])(i|y)(io|yo)/$1ё/gi; 
+
+## TOEGEVOEGD OP 24 DECEMBER: ya_ye_yu
+$name =~ s/([aeiou])(ia|ya)/$1я/gi; 
+$name =~ s/([aeiou])(ie|ye)/$1е/gi; 
+$name =~ s/([aeiou])(iu|yu)/$1ю/gi; 
+## EINDE TOEGEVOEGD OP 24 DECEMBER
+
+## TOEGEVOEGD OP 30 NOVEMBER
+$name =~ s/yye/ые/gi; ## Novye_...
+## EINDE TOEGEVOEGD OP 30 NOVEMBER
+## AANGESCHERPT OP 29 DECEMBER
+$name =~ s/([A-Z_-z])ye($|[-\/_ ])/$1ые$2/gi; ## Novye_..._maar wel A.Ye. Yegorov > A.Je. Jegorov
+$name =~ s/(yy|yi)($|[-\/_ ])/ый$2/gi; ## Novyy_Novyi
+
+## HIER VERWIJDERD OP 25 DECEMBER_ACHTERAAN ANDERS TOEGEVOEGD; leverde een probleem op met Piskaryev_dat Piskarjev werd i.p.v. Piskarjov
+##$name =~ s/([bvgdzklmnprstfch])y([ei])/$1ь$2/gi; ## Vasilyevich_Ilyich_...
+
+$name =~ s/([aeiou])y($|[-\/_ ])/$1й$2/gi; ## Aleksey_Novoy
+$name =~ s/([aeou])i($|[-\/_ ])/$1й$2/gi; ## Aleksei_Novoi (niet: Partii)
+
+## TOEGEVOEGD OP 29 DECEMBER – Voor Iurii e.d.
+$name =~ s/(^|[ -\/\.])Iu/$1Ю/gi;
+$name =~ s/(^|[ -\/\.])Ia/$1Я/gi;
+$name =~ s/(^|[ -\/\.])Ie/$1Е/gi;
+$name =~ s/(^|[ -\/\.])Io/$1Ё/gi;
+## TOEGEVOEGD OP 29 DECEMBER – Voor Iurii e.d.
+
 print IN "$name\n";
 close IN;
 }
@@ -207,9 +274,9 @@ my $eng = ();
 my $germanpop = ();
 my $effe = ();
 #}
+
 # Run all transliterators and add output to generator
 if ($name =~ /[A-Za-z]/){
-    
     open(IN3, ">$tmpdir/$input.txt");
     `$rootdir/ENG-RUS.flex <$tmpdir/$input2.txt >$tmpdir/SEEINPUT2.txt`;
     open(INNEW, "$tmpdir/SEEINPUT2.txt");
@@ -229,6 +296,127 @@ if ($name =~ /[A-Za-z]/){
 	    $in2 =~ s/^Е(вге|вгр|вда|вдо|вкл|вла|вле|вло|вме|впа|впл|впс|вре|все|вси|вст|всю|вте|вти|втр|вту|втю|втя|ган|гер|гин|гол|гон|гор|гош|гун|два|дем|дов|дом|жев|жик|жко|жов|зер|кат|кди|ким|кот|лаг|лан|лат|лах|лдо|леа|лем|лен|лео|лес|леф|лец|лиз|лик|лин|лис|лих|лиш|лки|лох|лпа|лпи|лук|лух|лче|лчи|лши|лм|лф|лц|лч|лш|ля|лют|ляк|ман|мел|мцо|мча|мша|мяш|нак|ник|нох|нтал|нк|нют|нюш|оах|пан|пеш|пиф|пих|пиш|пищ|рак|ран|рас|рах|раш|рга|ргин|рго|рем|рил|рин|рих|рки|рко|рлы|рма|рми|рмо|рму|рог|рон|роп|ротид|роф|рох|рош|руш|рхо|рша|рши|ршо|рыг|рык|рюх|рюш|сау|саф|сен|син|сип|сич|скин|стигн|стиф|ськи|сько|фан|фим|фиш|фре|фро|фте|чеи|чме|шко|шур)/ЙЕ$1/gi;
 	    $in2 =~ s/([ -_\/])Е(вге|вгр|вда|вдо|вкл|вла|вле|вло|вме|впа|впл|впс|вре|все|вси|вст|всю|вте|вти|втр|вту|втю|втя|ган|гер|гин|гол|гон|гор|гош|гун|два|дем|дов|дом|жев|жик|жко|жов|зер|кат|кди|ким|кот|лаг|лан|лат|лах|лдо|леа|лем|лен|лео|лес|леф|лец|лиз|лик|лин|лис|лих|лиш|лки|лох|лпа|лпи|лук|лух|лче|лчи|лши|лм|лф|лц|лч|лш|ля|лют|ляк|ман|мел|мцо|мча|мша|мяш|нак|ник|нох|нтал|нк|нют|нюш|оах|пан|пеш|пиф|пих|пиш|пищ|рак|ран|рас|рах|раш|рга|ргин|рго|рем|рил|рин|рих|рки|рко|рлы|рма|рми|рмо|рму|рог|рон|роп|ротид|роф|рох|рош|руш|рхо|рша|рши|ршо|рыг|рык|рюх|рюш|сау|саф|сен|син|сип|сич|скин|стигн|стиф|ськи|сько|фан|фим|фиш|фре|фро|фте|чеи|чме|шко|шур)/$1ЙЕ$2/gi;
 
+	    ##NEW - mre
+    $in2 =~ s/(^|[ -_\/])(Алена)([^А-Я,а-я]|$|[ -_\/,.])/$1Алёна$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Артем)([^и]|$|[ -_\/,.])/$1Артём$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Матрена)([^А-Я,а-я]|$|[ -_\/,.])/$1Матрёна$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Петр)([^А-Я,а-я]|$|[ -_\/,.])/$1Пётр$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Парфен)([^А-Я,а-я]|$|[ -_\/,.])/$1Парфён$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Фекла)([^А-Я,а-я]|$|[ -_\/,.])/$1Фёкла$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Флена)([^А-Я,а-я]|$|[ -_\/,.])/$1Флёна$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Семен)([^А-Я,а-я]|$|[ -_\/,.])/$1Семён$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Федор)/$1Фёдор/gi;
+    $in2 =~ s/(^|[ -_\/])(Соловьев)([А-Я,а-я]|$|[ -_\/,.])/$1Соловьёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Семенов)([А-Я,а-я]|$|[ -_\/,.])/$1Семёнов$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Воробьев)([А-Я,а-я]|$|[ -_\/,.])/$1Воробьёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Федоров)([А-Я,а-я]|$|[ -_\/,.])/$1Фёдоров$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Киселев)([А-Я,а-я]|$|[ -_\/,.])/$1Киселёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Ковалев)([А-Я,а-я]|$|[ -_\/,.])/$1Ковалёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Королев)([А-Я,а-я]|$|[ -_\/,.])/$1Королёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Пономарев)([А-Я,а-я]|$|[ -_\/,.])/$1Пономарёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Журавлев)([А-Я,а-я]|$|[ -_\/,.])/$1Журавлёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Аксенов)([А-Я,а-я]|$|[ -_\/,.],)/$1Аксёнов$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Селезнев)([А-Я,а-я]|$|[ -_\/,.])/$1Селезнёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Горбачев)([А-Я,а-я]|$|[ -_\/,.])/$1Горбачёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Муравьев)([А-Я,а-я]|$|[ -_\/,.])/$1Муравьёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Бобылев)([А-Я,а-я]|$|[ -_\/,.])/$1Бобылёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Белозеров)([А-Я,а-я]|$|[ -_\/,.])/$1Белозёров$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Лихачев)([А-Я,а-я]|$|[ -_\/,.])/$1Лихачёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Фомичев)([А-Я,а-я]|$|[ -_\/,.])/$1Фомичёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Пискарев)([А-Я,а-я]|$|[ -_\/,.])/$1Пискарёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Слепнев)([А-Я,а-я]|$|[ -_\/,.])/$1Слепнёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Хрущев)([А-Я,а-я]|$|[ -_\/,.])/$1Хрущёв$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Еременко)([А-Я,а-я]|$|[ -_\/,.])/$1Ерёменко$3/gi;
+    $in2 =~ s/(^|[ -_\/])(Пугачев)([А-Я,а-я]|$|[ -_\/,.])/$1Пугачёв$3/gi;
+        $in2 =~ s/(Аксенка)([^А-Я,а-я]|$|[ -_\/,.])/Аксёнка$2/gi;
+    $in2 =~ s/(Алека)([^А-Я,а-я]|$|[ -_\/,.])/Алёка$2/gi;
+    $in2 =~ s/(Аленя)([^А-Я,а-я]|$|[ -_\/,.])/Алёня$2/gi;
+    $in2 =~ s/(Алеха)([^А-Я,а-я]|$|[ -_\/,.])/Алёха$2/gi;
+    $in2 =~ s/(Алеша)([^А-Я,а-я]|$|[ -_\/,.])/Алёша$2/gi;
+    $in2 =~ s/(Аленка)([^А-Я,а-я]|$|[ -_\/,.])/Алёнка$2/gi;
+    $in2 =~ s/(Артема)([^А-Я,а-я]|$|[ -_\/,.])/Артёма$2/gi;
+    $in2 =~ s/(Артемка)([^А-Я,а-я]|$|[ -_\/,.])/Артёмка$2/gi;
+    $in2 =~ s/(Артемчик)([^А-Я,а-я]|$|[ -_\/,.])/Артёмчик$2/gi;
+    $in2 =~ s/(Артеша)([^А-Я,а-я]|$|[ -_\/,.])/Артёша$2/gi;
+    $in2 =~ s/(Валена)([^А-Я,а-я]|$|[ -_\/,.])/Валёна$2/gi;
+    $in2 =~ s/(Васена)([^А-Я,а-я]|$|[ -_\/,.])/Васёна$2/gi;
+    $in2 =~ s/(Васеня)([^А-Я,а-я]|$|[ -_\/,.])/Васёня$2/gi;
+    $in2 =~ s/(Василек)([^А-Я,а-я]|$|[ -_\/,.])/Василёк$2/gi;
+    $in2 =~ s/(Витеша)([^А-Я,а-я]|$|[ -_\/,.])/Витёша$2/gi;
+    $in2 =~ s/(Галек)([^А-Я,а-я]|$|[ -_\/,.])/Галёк$2/gi;
+    $in2 =~ s/(Галека)([^А-Я,а-я]|$|[ -_\/,.])/Галёка$2/gi;
+    $in2 =~ s/(Данек)([^А-Я,а-я]|$|[ -_\/,.])/Данёк$2/gi;
+    $in2 =~ s/(Дарена)([^А-Я,а-я]|$|[ -_\/,.])/Дарёна$2/gi;
+    $in2 =~ s/(Дареха)([^А-Я,а-я]|$|[ -_\/,.])/Дарёха$2/gi;
+    $in2 =~ s/(Дареша)([^А-Я,а-я]|$|[ -_\/,.])/Дарёша$2/gi;
+    $in2 =~ s/(Дема)([^А-Я,а-я]|$|[ -_\/,.])/Дёма$2/gi;
+    $in2 =~ s/(Ерема)([^А-Я,а-я]|$|[ -_\/,.])/Ерёма$2/gi;
+    $in2 =~ s/(Ела)([^А-Я,а-я]|$|[ -_\/,.])/Ёла$2/gi;
+    $in2 =~ s/(Звездочка)([^А-Я,а-я]|$|[ -_\/,.])/Звёздочка$2/gi;
+    $in2 =~ s/(Игорек)([^А-Я,а-я]|$|[ -_\/,.])/Игорёк$2/gi;
+    $in2 =~ s/(Катена)([^А-Я,а-я]|$|[ -_\/,.])/Катёна$2/gi;
+    $in2 =~ s/(Клена)([^А-Я,а-я]|$|[ -_\/,.])/Клёна$2/gi;
+    $in2 =~ s/(Кленя)([^А-Я,а-я]|$|[ -_\/,.])/Клёня$2/gi;
+    $in2 =~ s/(Клепа)([^А-Я,а-я]|$|[ -_\/,.])/Клёпа$2/gi;
+    $in2 =~ s/(Ксена)([^А-Я,а-я]|$|[ -_\/,.])/Ксёна$2/gi;
+    $in2 =~ s/(Кузена)([^А-Я,а-я]|$|[ -_\/,.])/Кузёна$2/gi;
+    $in2 =~ s/(Лева)([^А-Я,а-я]|$|[ -_\/,.])/Лёва$2/gi;
+    $in2 =~ s/(Лека)([^А-Я,а-я]|$|[ -_\/,.])/Лёка$2/gi;
+    $in2 =~ s/(Лекса)([^А-Я,а-я]|$|[ -_\/,.])/Лёкса$2/gi;
+    $in2 =~ s/(Лекся)([^А-Я,а-я]|$|[ -_\/,.])/Лёкся$2/gi;
+    $in2 =~ s/(Леля)([^А-Я,а-я]|$|[ -_\/,.])/Лёля$2/gi;
+    $in2 =~ s/(Леня)([^А-Я,а-я]|$|[ -_\/,.])/Лёня$2/gi;
+    $in2 =~ s/(Лера)([^А-Я,а-я]|$|[ -_\/,.])/Лёра$2/gi;
+    $in2 =~ s/(Леся)([^А-Я,а-я]|$|[ -_\/,.])/Лёся$2/gi;
+    $in2 =~ s/(Леха)([^А-Я,а-я]|$|[ -_\/,.])/Лёха$2/gi;
+    $in2 =~ s/(Леша)([^А-Я,а-я]|$|[ -_\/,.])/Лёша$2/gi;
+        $in2 =~ s/(Матренка)([^А-Я,а-я]|$|[ -_\/,.])/Матрёнка$2/gi;
+    $in2 =~ s/(Матреха)([^А-Я,а-я]|$|[ -_\/,.])/Матрёха$2/gi;
+    $in2 =~ s/(Матреша)([^А-Я,а-я]|$|[ -_\/,.])/Матрёша$2/gi;
+    $in2 =~ s/(Мелеха)([^А-Я,а-я]|$|[ -_\/,.])/Мелёха$2/gi;
+    $in2 =~ s/(Мелеша)([^А-Я,а-я]|$|[ -_\/,.])/Мелёша$2/gi;
+    $in2 =~ s/(Надена)([^А-Я,а-я]|$|[ -_\/,.])/Надёна$2/gi;
+    $in2 =~ s/(Надеха)([^А-Я,а-я]|$|[ -_\/,.])/Надёха$2/gi;
+    $in2 =~ s/(Настена)([^А-Я,а-я]|$|[ -_\/,.])/Настёна$2/gi;
+    $in2 =~ s/(Настеха)([^А-Я,а-я]|$|[ -_\/,.])/Настёха$2/gi;
+    $in2 =~ s/(Нема)([^А-Я,а-я]|$|[ -_\/,.])/Нёма$2/gi;
+    $in2 =~ s/(Нефедка)([^А-Я,а-я]|$|[ -_\/,.])/Нефёдка$2/gi;
+    $in2 =~ s/(Олена)([^А-Я,а-я]|$|[ -_\/,.])/Олёна$2/gi;
+    $in2 =~ s/(Панферка)([^А-Я,а-я]|$|[ -_\/,.])/Панфёрка$2/gi;
+    $in2 =~ s/(Парменка)([^А-Я,а-я]|$|[ -_\/,.])/Пармёнка$2/gi;
+    $in2 =~ s/(Пармеха)([^А-Я,а-я]|$|[ -_\/,.])/Пармёха$2/gi;
+    $in2 =~ s/(Пармеша)([^А-Я,а-я]|$|[ -_\/,.])/Пармёша$2/gi;
+    $in2 =~ s/(Парфенка)([^А-Я,а-я]|$|[ -_\/,.])/Парфёнка$2/gi;
+    $in2 =~ s/(Парфеха)([^А-Я,а-я]|$|[ -_\/,.])/Парфёха$2/gi;
+    $in2 =~ s/(Петеха)([^А-Я,а-я]|$|[ -_\/,.])/Петёха$2/gi;
+    $in2 =~ s/(Петеша)([^А-Я,а-я]|$|[ -_\/,.])/Петёша$2/gi;
+    $in2 =~ s/(Селиверстка)([^А-Я,а-я]|$|[ -_\/,.])/Селивёрстка$2/gi;
+    $in2 =~ s/(Сема)([^А-Я,а-я]|$|[ -_\/,.])/Сёма$2/gi;
+    $in2 =~ s/(Семенка)([^А-Я,а-я]|$|[ -_\/,.])/Семёнка$2/gi;
+    $in2 =~ s/(Сережа)([^А-Я,а-я]|$|[ -_\/,.])/Серёжа$2/gi;
+    $in2 =~ s/(Сереня)([^А-Я,а-я]|$|[ -_\/,.])/Серёня$2/gi;
+    $in2 =~ s/(Сильверстка)([^А-Я,а-я]|$|[ -_\/,.])/Сильвёрстка$2/gi;
+    $in2 =~ s/(Степа)([^А-Я,а-я]|$|[ -_\/,.])/Стёпа$2/gi;
+    $in2 =~ s/(Тена)([^А-Я,а-я]|$|[ -_\/,.])/Тёна$2/gi;
+    $in2 =~ s/(Тереня)([^А-Я,а-я]|$|[ -_\/,.])/Терёня$2/gi;
+    $in2 =~ s/(Тереха)([^А-Я,а-я]|$|[ -_\/,.])/Терёха$2/gi;
+    $in2 =~ s/(Тереша)([^А-Я,а-я]|$|[ -_\/,.])/Терёша$2/gi;
+    $in2 =~ s/(Теша)([^А-Я,а-я]|$|[ -_\/,.])/Тёша$2/gi;
+    $in2 =~ s/(Федорка)([^А-Я,а-я]|$|[ -_\/,.])/Фёдорка$2/gi;
+    $in2 =~ s/(Феклушка)([^А-Я,а-я]|$|[ -_\/,.])/Фёклушка$2/gi;
+    $in2 =~ s/(Фефелка)([^А-Я,а-я]|$|[ -_\/,.])/Фефёлка$2/gi;
+    $in2 =~ s/(Фленка)([^А-Я,а-я]|$|[ -_\/,.])/Флёнка$2/gi;
+    $in2 =~ s/(Христена)([^А-Я,а-я]|$|[ -_\/,.])/Христёна$2/gi;
+    $in2 =~ s/(Христеня)([^А-Я,а-я]|$|[ -_\/,.])/Христёня$2/gi;
+    $in2 =~ s/(Шурена)([^А-Я,а-я]|$|[ -_\/,.])/Шурёна$2/gi;
+	    ##NEW - mre
+
+    #Евгеневич
+    #$in2 =~ s/(^|[ -_\/])(Анатол|Аркад|Арсен|Артем|Васил|Валер|Витал|Геннад|Георг|Григор|Евген|Юр)(ев|иев)/$1$2ьев/g; ##MRE 20160503
+	    $in2 =~ s/(Анатол|Аркад|Арсен|Артем|Васил|Валер|Витал|Геннад|Георг|Григор|Евген|Юр)ев/$1йев/g; ##MRE 20160503
+	    $in2 =~ s/(Анатол|Аркад|Арсен|Артем|Васил|Валер|Витал|Геннад|Георг|Григор|Евген|Юр)иев/$1йев/g; ##MRE 20160503
+
+	    
 	    ## Individuele namen fixen
 		#engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/Александер/gi, "Александр"); // Alexander, Aleksander, ...
 		#engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(^|[ -\/])Михайл($|[-\/,. ])/gi, "$1Михаил$2");
@@ -237,6 +425,13 @@ if ($name =~ /[A-Za-z]/){
 		#engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(^|[ -\/])Ил(ич)/gi, "$1Иль$2");// Ilich > Ильич
 		#engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/([А-Я,a-я])(в)(ев|ева|еве|еву|евым|евых|евыми|евой)($|[-\/,. ])/gi, "$1$2ь$3$4"); // Solovyev
 
+	    $in2 =~ s/Александер/Александр/gi;
+	    $in2 =~ s/(^|[ -\/])Михайл($|[-\/,. ])/$1Михаил$2/gi;
+	    $in2 =~ s/(^|[ -\/])Тчай/$1Чай/gi;
+	    $in2 =~ s/(^|[ -\/])Венями/$1Вениами/gi;
+	    $in2 =~ s/(^|[ -\/])Ил(ич)/$1Иль$2/gi;
+	    $in2 =~ s/([А-Я,a-я])(в)(ев|ева|еве|еву|евым|евых|евыми|евой)($|[-\/,. ])/$1$2ь$3$4/gi;
+	    
 	    ## э's in woorden fixen
 	    $in2 =~ s/^е(то|ти)/э$1/;
             $in2 =~ s/([ -\/])е(то|ти)/$1э$2/;
@@ -370,15 +565,16 @@ if ($name =~ /[A-Za-z]/){
   $nlpop =~ s/oe$/oje/i;
   $nlpop =~ s/oe_/oje_/i;
 
-  $nlpop =~ s/Novye/Novyje/;
-
   $nlpop =~ s/eev/ejev/i;
   $nlpop =~ s/rev$/rjev/i;
   $nlpop =~ s/iev$/iëv/i;
   $nlpop =~ s/asev$/asjev/i;
   $nlpop =~ s/rev_/rjev_/i;
   $nlpop =~ s/iev_/iëv_/i;
+  $nlpop =~ s/oviëv$/ovjov/i; ##20160503
+  $nlpop =~ s/oviëv_/ovjov_/i; ##20160503
   $nlpop =~ s/asev_/asjev_/i;
+  $nlpop =~ s/Ilitsj/Iljitsj/i;
   $nlpop =~ s/Ilyitsj/Iljitsj/i;
   $nlpop =~ s/Aleksander/Aleksandr/;
   $nlpop =~ s/aev$/ajev/i;
@@ -389,7 +585,6 @@ if ($name =~ /[A-Za-z]/){
   $nlpop =~ s/vilj$/vili/i;
   $nlpop =~ s/Genrj/Genri/i;
   $nlpop =~ s/ovljev$/ovlev/i;
-
   $nlpop =~ s/lev_/ljev_/i;
   $nlpop =~ s/oevski$/ojevski/i;
   $nlpop =~ s/-soje/-Soe/i;
@@ -407,8 +602,10 @@ if ($name =~ /[A-Za-z]/){
   $nlpop =~ s/yj_/y_/i;
   #$nlpop =~ s/j_/i_/i;
   #$nlpop =~ s/y_/i_/i; 
-  $nlpop =~ s/ii_/i_/i;
-  $nlpop =~ s/ni$/ny/i;
+    $nlpop =~ s/ii_/i_/i;
+    $nlpop =~ s/ni$/ny/i; 
+    $nlpop =~ s/Jevgeny$/Jevgeni/i; ##20160503
+    $nlpop =~ s/Jevgeny_/Jevgeni_/i; ##20160503
   $nlpop =~ s/ti_/ty_/i;
 
   $nlpop =~ s/y(a|e|o)/j$1/gi;
@@ -434,13 +631,35 @@ if ($name =~ /[A-Za-z]/){
     $nlpop =~ s/Venjamin/Veniamin/g;
     #$nlpop =~ s/Natalja_Aleksejevna/Natalia_Aleksejevna/g;
     $nlpop =~ s/Djana/Diana/;
-    $nlpop =~ s/Vjoetsjeiski/Vyoetsjejski/g;
+
+    $nlpop =~ s/Vjoetsjejski/Vyoetsjejski/g;
+
     $nlpop =~ s/Tjoekit/Tyoekit/g;
     $nlpop =~ s/Sjekpeer/Sjekpеër/g;
     $nlpop =~ s/Oen/Oën/g;
     
+    $nlpop =~ s/([Oo])eë/$1ejo/g;
+    #Oeëlen >< Oejolen [-]
+    $nlpop =~ s/Oejolen/Oeëlen/g;
+
+    $nlpop =~ s/Victor/Viktor/g;
+    $nlpop =~ s/Naem/Najem/g;
+    $nlpop =~ s/atsjev$/atsjov/g;
+    $nlpop =~ s/atsjev_/atsjov_/g;
+    $nlpop =~ s/oejk/oeyk/g;
+    $nlpop =~ s/Dzje/Dzjo/g;
+    $nlpop =~ s/Je\.V\./Jo\.V\./g;
+    
     $nlpop =~ s/Natalja_Aleksejevna_Narotsjnitskaja/Natalia_Aleksejevna_Narotsjnitskaja/;
 
+    $nlpop =~ s/yj/j/gi; ##MRE 20160429
+    $nlpop =~ s/Petr$/Pjotr/gi; ##MRE 20160429
+    $nlpop =~ s/Fedor$/Fjodor/gi; ##MRE 20160429
+    $nlpop =~ s/Petr_/Pjotr_/gi; ##MRE 20160429
+    $nlpop =~ s/Fedor_/Fjodor_/gi; ##MRE 20160429
+  #Novyje_Boety >< Novje_Boety [-]
+    $nlpop =~ s/Novje/Novyje/i;
+    
         #Ksenia_Ljapina >< Ksenja_Ljapina [-]
 	#Zviad_Gamsachoerdia >< Zvjad_Gamsachoerdja [-]
 	#Andrej_Illarionov >< Andrej_Illarjonov [-]
@@ -462,9 +681,8 @@ if ($name =~ /[A-Za-z]/){
   #$nlpop =~ s/_E/_Je/g;
   #$nlpop =~ s/_@/_E/g;  
   
-  #$nlpop =~ s/YJe/Je/;
-    
-  push @output, $generator->addOutput('populair', $nlpop);    
+   $nlpop =~ s/_/ /g if ($debug !~ /D/);
+   $generator->addOutput('populair', $nlpop);    
 
 ##ENG
       $eng = `$rootdir/RU-EN.populair-engels.flex <$tmpdir/$input.txt`;
@@ -490,7 +708,6 @@ if ($name =~ /[A-Za-z]/){
     $eng =~ s/Yelkhan/Elkhan/g;
     $eng =~ s/Yelvira/Elvira/g;
     $eng =~ s/Gorki/Gorky/g;
-    #$eng =~ s///g;
     
         #Natalia_Alekseyevna >< Natalia_Alekseevna [-]
 	#Eka_Zguladze >< Yeka_Zguladze [-]
@@ -499,6 +716,7 @@ if ($name =~ /[A-Za-z]/){
 	#Maxim_Gorky >< Maxim_Gorki [-]
 	#Nataliya_Alekseyevna_Narochnitskaya >< Nataliya_Alekseevna_Narochnitskaya [-]
 
+      $eng =~ s/_/ /g if ($debug !~ /D/);
       push @output, $generator->addOutput('populair-engels', $eng);
 
     ###GER
@@ -580,7 +798,8 @@ if ($name =~ /[A-Za-z]/){
 	#mnogoljudny >< mnogoljudni [-]
 	#wesnuschtschaty >< wesnuschtschati [-]
 	#agentstwo >< agenztwo [-]
-    
+
+      $germanpop =~ s/_/ /g if ($debug !~ /D/);   
       push @output, $generator->addOutput('populair-duits', $germanpop);  
 
       if ($debug =~ /D/){
@@ -704,9 +923,10 @@ if ($name =~ /[A-Za-z]/){
     #Sergej_Jakovlev >< Sergej_Jakovljev [-]
     #Novyje_Boety >< Novye_Boety [-]
 
+    $nlpop =~ s/_/ /g if ($debug !~ /D/);
     push @output, $generator->addOutput('populair', "$nlpop");    
 
-	my $wiki = `$rootdir/RU-NL.wikipedia.flex <$tmpdir/$input.txt`;
+    my $wiki = `$rootdir/RU-NL.wikipedia.flex <$tmpdir/$input.txt`;
     $wiki =~ s/aè/aë/g;
     $wiki =~ s/Aè/Aë/g;
     $wiki =~ s/AÈ/AË/g;
@@ -797,7 +1017,8 @@ if ($name =~ /[A-Za-z]/){
     $wiki =~ s/ilev$/iljev/g;
     $wiki =~ s/ilev_/iljev_/g;
     $wiki =~ s/potsjtalon/potsjtaljon/;
-    
+
+        $wiki =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('wikipedia', "$wiki");
 
 	my $englishpop = `$rootdir/RU-EN.populair-engels.flex <$tmpdir/$input.txt`;
@@ -855,7 +1076,8 @@ if ($name =~ /[A-Za-z]/){
     $englishpop =~ s/orev_/oryev/;
     $englishpop =~ s/Piskarev/Piskaryov/;
     $englishpop =~ s/Slepnev/Slepnyov/;
-	
+
+        $englishpop =~ s/_/ /g if ($debug !~ /D/);
         push @output, $generator->addOutput('populair-engels', "$englishpop");
 	
         my $germanpop = `$rootdir/RU-DE.populair-duits.flex <$tmpdir/$input.txt`;
@@ -893,16 +1115,20 @@ if ($name =~ /[A-Za-z]/){
         #Wladimir_Gussew >< Wladimir_Gusjew [-]
 	#Sergei_Jakowlew >< Sergei_Jakowljew [-]
 	#Mussikjongikote >< Mussikongikote [-]
-	
+
+        $germanpop =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('populair-duits', "$germanpop");
 
-        my $ALA = `$rootdir/RU-EN.ALA-LC.flex <$tmpdir/$input.txt`;
+    my $ALA = `$rootdir/RU-EN.ALA-LC.flex <$tmpdir/$input.txt`;
+        $ALA =~ s/_/ /g if ($debug !~ /D/);
         push @output, $generator->addOutput('ALA-LC', "$ALA"); 
 
-        my $ALAs = `$rootdir/RU-EN.ALA-LC-simpel.flex <$tmpdir/$input.txt`;
+    my $ALAs = `$rootdir/RU-EN.ALA-LC-simpel.flex <$tmpdir/$input.txt`;
+        $ALAs =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('ALA-LC-simpel', "$ALAs");
 
-        my $science = `$rootdir/RU-EN.wetenschappelijk.flex <$tmpdir/$input.txt`;
+    my $science = `$rootdir/RU-EN.wetenschappelijk.flex <$tmpdir/$input.txt`;
+        $science =~ s/_/ /g if ($debug !~ /D/);
         push @output, $generator->addOutput('wetenschappelijk', "$science");
 
         my $BGN = `$rootdir/RU-EN.BGN-PCGN.flex <$tmpdir/$input.txt`;
@@ -937,7 +1163,8 @@ if ($name =~ /[A-Za-z]/){
     $BGN =~ s/E\./Ye\./; ##NEW
     $BGN =~s/Uëg/Uyyëg/;
     
-        push @output, $generator->addOutput('BGN-PCGN', "$BGN");
+    $BGN =~ s/_/ /g if ($debug !~ /D/);
+    push @output, $generator->addOutput('BGN-PCGN', "$BGN");
 
         my $BGNs = `$rootdir/RU-EN.BGN-PCGN-simpel.flex <$tmpdir/$input.txt`;
 
@@ -971,19 +1198,23 @@ if ($name =~ /[A-Za-z]/){
 	#Arkady_Bashlachev >< Arkady_Bashlachyov [-]
 	#Nataliya_Alekseyevna_Narochnitskaya >< Natalya_Alekseyevna_Narochnitskaya [-]
 	#Musiykongiykote >< Musykongykote [-]
-   
+
+        $BGNs =~ s/_/ /g if ($debug !~ /D/);
         push @output, $generator->addOutput('BGN-PCGN-simpel', "$BGNs");
 	
-        my $brit = `$rootdir/RU-EN.british-standard.flex <$tmpdir/$input.txt`;
+    my $brit = `$rootdir/RU-EN.british-standard.flex <$tmpdir/$input.txt`;
+        $brit =~ s/_/ /g if ($debug !~ /D/);
         push @output, $generator->addOutput('british-standard', "$brit"); 
 
-        my $gost83 = `$rootdir/RU-EN.GOST-1983.flex <$tmpdir/$input.txt`;			
+    my $gost83 = `$rootdir/RU-EN.GOST-1983.flex <$tmpdir/$input.txt`;
+        $gost83 =~ s/_/ /g if ($debug !~ /D/);
         push @output, $generator->addOutput('GOST-1983', "$gost83");		     
 	
         my $gost = `$rootdir/RU-EN.GOST-2000b.flex <$tmpdir/$input.txt`;
 	$gost =~ s/(CZ)([IEYJ,ieyj])/C$2/g;
 	$gost =~ s/(Cz)([IEYJ,ieyj])/C$2/g;
-	$gost =~ s/(cz)([ieyj,ieyj])/c$2/g;
+    $gost =~ s/(cz)([ieyj,ieyj])/c$2/g;
+        $gost =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('GOST-2000b', "$gost");
 
 	my $gost04 = `$rootdir/RU-EN.GOST-2004.flex <$tmpdir/$input.txt`;
@@ -998,19 +1229,23 @@ if ($name =~ /[A-Za-z]/){
     $gost04 =~ s/E\./Ye\./;
     $gost04 =~ s/chyev$/chev/;
     $gost04 =~ s/chyev_/chev_/;
-    
+
+        $gost04 =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('GOST-2004', "$gost04");
 
-        my $gost06 = `$rootdir/RU-EN.GOST_R_52535.1-2006.flex <$tmpdir/$input.txt`;
+    my $gost06 = `$rootdir/RU-EN.GOST_R_52535.1-2006.flex <$tmpdir/$input.txt`;
+        $gost06 =~ s/_/ /g if ($debug !~ /D/);
         push @output, $generator->addOutput('GOST_R_52535.1-2006', "$gost06");
 
         my $ICAO = `$rootdir/RU-EN.ICAO.flex <$tmpdir/$input.txt`;
         $ICAO =~ s/IA/Ia/g;
         $ICAO =~ s/IU/Iu/g;
+        $ICAO =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('ICAO', "$ICAO");
 
 	my $iso = `$rootdir/RU-EN.ISO9-1995.flex <$tmpdir/$input.txt`;
-    push @output, $generator->addOutput('ISO9-1995', "$iso");
+        $iso =~ s/_/ /g if ($debug !~ /D/);
+        push @output, $generator->addOutput('ISO9-1995', "$iso");
 
 	my $pp2010 = `$rootdir/RU-EN.paspoort-1997-2010.flex <$tmpdir/$input.txt`;
 
@@ -1055,6 +1290,7 @@ if ($name =~ /[A-Za-z]/){
 
         $pp2010 =~ s/Maya/Mayya/g; ##NEW
 
+        $pp2010 =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('paspoort-1997-2010', "$pp2010");
 
     my $ppUSSR = `$rootdir/RU-EN.paspoort-ussr.flex <$tmpdir/$input.txt`;
@@ -1082,7 +1318,9 @@ if ($name =~ /[A-Za-z]/){
     $ppUSSR =~ s/Afanassev/Afanassiev/g;
     $ppUSSR =~ s/Grigorev/Grigoriev/;
     $ppUSSR =~ s/Vassilev/Vassiliev/g;
-        push @output, $generator->addOutput('paspoort-ussr', "$ppUSSR");
+
+    $ppUSSR =~ s/_/ /g if ($debug !~ /D/);
+    push @output, $generator->addOutput('paspoort-ussr', "$ppUSSR");
 
     my $rij = `$rootdir/RU-EN.rijbewijs.flex <$tmpdir/$input.txt`;
     $rij =~ s/([aeiou'’])ev/$1yev/;
@@ -1105,7 +1343,8 @@ if ($name =~ /[A-Za-z]/){
 	#Yo.V._Vasil’ev >< Ye.V._Vasil’ev [-]
 	#Uyog >< Uyeg [-]
 	#Dzhesyumel >< Dzhyesyumel [-]
-	
+
+        $rij =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('rijbewijs', "$rij");
 
     if ($debug =~ /D/){
