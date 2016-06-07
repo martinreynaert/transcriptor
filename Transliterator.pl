@@ -43,8 +43,12 @@ my @NAME = split /_/, $name;
 $name = ();
 my $prevnaam = '';
 foreach my $naam (@NAME){
-$naam = lc($naam);
-$naam = ucfirst($naam);  
+  if ($type !~ /O/){
+    if (($naam !~ /-/) and ($naam !~ /\./)){
+      $naam = lc($naam);
+    }
+  $naam = ucfirst($naam);
+  }
   if ($prevnaam !~ /$naam/){
   $name .= $naam . '_';
   }
