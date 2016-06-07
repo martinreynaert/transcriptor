@@ -98,12 +98,12 @@ sub getVakAdvies {
 	}
 	
 	if ($advies ne $wiki && length($wiki) > 0) {
-		$html .= '<div class="col-xs-6"><img class="wikipedia logo" src="afbeeldingen/wikipedia.png"></div>';
+		$html .= '<div class="col-xs-6"><img class="wikipedia logo" src="afbeeldingen/wikipediasmall.png"></div>';
 		$html .= '<div class="col-xs-6">' . $wiki . '</div>';
 	}
-	
+	if (($advies !~ /Invalid/) and ($advies !~ /Ongeldige/)){
 	$html .= '<div class="col-xs-12 text-center search">[ <a href="https://www.google.nl/#q=' . $advies . '&nfpr=1" target=_blank">Google</a> ]&nbsp;&nbsp;[ <a href="https://nl.wikipedia.org/wiki/Speciaal:Zoeken?search=' . $wiki . '" target=_blank">Wikipedia</a> ]';
-	
+	}
 	if ($self->{type} eq 'L') {
 		$html .= '&nbsp;&nbsp;[ <a href="https://www.google.com/maps?oi=map&q=' . $advies . '" target=_blank">Google Maps</a> ]';
 	}
