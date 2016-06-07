@@ -1,16 +1,17 @@
+
 use strict;
 use warnings;
-
-
+#use locale;
 
 if (!@ARGV) {
 	die "No input.";
 }
 
 my $name = $ARGV[2];
-$name =~ s/ /_/g;
-#my $rootdir = $ARGV[0];
-#my $rootdir = '/opensonar/TransApp/';
+$name =~ s/ /_/;
+
+
+
 my $rootdir; 
 BEGIN { $rootdir = $ARGV[0];}
 use lib "$rootdir/lib";
@@ -21,10 +22,6 @@ $debug = $ARGV[3] if (defined $ARGV[3]);
 
 open(IN2, ">$tmpdir/SEEINPUT.txt");
 print IN2 "IN: $name ROOT: $rootdir TMP: $tmpdir\n";
-
-#my $var;
-#BEGIN { $var = "/home/usr/bibfile"; }
-#use lib "$var/lib/";
 
 open(IN3, ">$tmpdir/SEEINPUT2.txt");
 
@@ -39,6 +36,23 @@ if ($name =~ /_OTH$/) {
     $type = 'O';
     $name =~ s/_OTH$//;
 }
+
+##In array duwen, elk stukje first char uppercasen, indien stukje zelfde als vorige: weggooien --BEGIN
+print STDERR "NAME1: $name\n";
+my @NAME = split /_/, $name;
+$name = ();
+my $prevnaam = '';
+foreach my $naam (@NAME){
+$naam = lc($naam);
+$naam = ucfirst($naam);  
+  if ($prevnaam !~ /$naam/){
+  $name .= $naam . '_';
+  }
+$prevnaam = $naam;
+}
+$name =~ s/_$//;
+print STDERR "NAME2: $name\n";
+##In array duwen, elk stukje first char uppercasen, indien stukje zelfde als vorige: weggooien --END
 
 my @chars = ("A".."Z", "a".."z", "0..9");
 
@@ -59,7 +73,12 @@ print IN2 "IN2: $name TYPE: $type\n";
 close IN2;
 
 # Save input
-if ($name =~ /[A-Za-z]/){
+#А-Я,а-я
+if (($name =~ /[A-Za-z]/) and ($name =~ /[А-Яа-я]/)){
+  ##Print ERROR MESSAGE saying one cannot mix Latin and Cyrillic scripts in the input
+  $name = 'INVALID';
+}
+elsif ($name =~ /[A-Za-z]/){
 open(IN, ">$tmpdir/$input2.txt");
 
 	## On-Russische letters 
@@ -126,7 +145,7 @@ $name =~ s/([aeou])i($|[-\/_ ])/$1й$2/gi; ## Aleksei_Novoi (niet: Partii)
 $name =~ s/(^|[ -\/\.])Iu/$1Ю/gi;
 $name =~ s/(^|[ -\/\.])Ia/$1Я/gi;
 $name =~ s/(^|[ -\/\.])Ie/$1Е/gi;
-$name =~ s/(^|[ -\/\.])Io/$1Ё/gi;
+#$name =~ s/(^|[ -\/\.])Io/$1Ё/gi; ##Flagged out 20160603
 ## TOEGEVOEGD OP 29 DECEMBER – Voor Iurii e.d.
 
 print IN "$name\n";
@@ -135,8 +154,10 @@ close IN;
 else {
     open(IN, ">$tmpdir/deaccent.txt");
 
+###Volgende bevatten nog sporen van Javascriptcode van Pepijn en kunnen dus anders dan bedoeld werken!! Let op de komma in de letterklassen. Negeert '^' vooraan de klasse elk element ervan?
+    
     $name =~ s/(^|[ -_\/])(Алена)([^А-Я,а-я]|$|[ -_\/,.])/$1Алёна$3/gi;
-    $name =~ s/(^|[ -_\/])(Артем)([^и]|$|[ -_\/,.])/$1Артём$3/gi;
+    $name =~ s/(^|[ -_\/])(Артем)([^и,ь]|$|[ -_\/,.])/$1Артём$3/gi;
     $name =~ s/(^|[ -_\/])(Матрена)([^А-Я,а-я]|$|[ -_\/,.])/$1Матрёна$3/gi;
     $name =~ s/(^|[ -_\/])(Петр)([^А-Я,а-я]|$|[ -_\/,.])/$1Пётр$3/gi;
     $name =~ s/(^|[ -_\/])(Парфен)([^А-Я,а-я]|$|[ -_\/,.])/$1Парфён$3/gi;
@@ -277,6 +298,13 @@ my $effe = ();
 
 # Run all transliterators and add output to generator
 if ($name =~ /[A-Za-z]/){
+  if ($name =~ /^INVALID$/){
+  ##Print ERROR MESSAGE saying one cannot mix Latin and Cyrillic scripts in the input
+  #$generator->addOutput('populair', $nlpop);
+    #push @output, $generator->addOutput('populair', '<span class="na_field">Invalid Input: Please do not mix Latin and Cyrillic scripts in the input.</span>');
+    push @output, $generator->addOutput('populair', '<span class="na_field">Ongeldige Input: Gelieve de Latijnse en Cyrillische scripts niet te mengen in de input.</span>');
+  }
+  else {    
     open(IN3, ">$tmpdir/$input.txt");
     `$rootdir/ENG-RUS.flex <$tmpdir/$input2.txt >$tmpdir/SEEINPUT2.txt`;
     open(INNEW, "$tmpdir/SEEINPUT2.txt");
@@ -296,6 +324,35 @@ if ($name =~ /[A-Za-z]/){
 	    $in2 =~ s/^Е(вге|вгр|вда|вдо|вкл|вла|вле|вло|вме|впа|впл|впс|вре|все|вси|вст|всю|вте|вти|втр|вту|втю|втя|ган|гер|гин|гол|гон|гор|гош|гун|два|дем|дов|дом|жев|жик|жко|жов|зер|кат|кди|ким|кот|лаг|лан|лат|лах|лдо|леа|лем|лен|лео|лес|леф|лец|лиз|лик|лин|лис|лих|лиш|лки|лох|лпа|лпи|лук|лух|лче|лчи|лши|лм|лф|лц|лч|лш|ля|лют|ляк|ман|мел|мцо|мча|мша|мяш|нак|ник|нох|нтал|нк|нют|нюш|оах|пан|пеш|пиф|пих|пиш|пищ|рак|ран|рас|рах|раш|рга|ргин|рго|рем|рил|рин|рих|рки|рко|рлы|рма|рми|рмо|рму|рог|рон|роп|ротид|роф|рох|рош|руш|рхо|рша|рши|ршо|рыг|рык|рюх|рюш|сау|саф|сен|син|сип|сич|скин|стигн|стиф|ськи|сько|фан|фим|фиш|фре|фро|фте|чеи|чме|шко|шур)/ЙЕ$1/gi;
 	    $in2 =~ s/([ -_\/])Е(вге|вгр|вда|вдо|вкл|вла|вле|вло|вме|впа|впл|впс|вре|все|вси|вст|всю|вте|вти|втр|вту|втю|втя|ган|гер|гин|гол|гон|гор|гош|гун|два|дем|дов|дом|жев|жик|жко|жов|зер|кат|кди|ким|кот|лаг|лан|лат|лах|лдо|леа|лем|лен|лео|лес|леф|лец|лиз|лик|лин|лис|лих|лиш|лки|лох|лпа|лпи|лук|лух|лче|лчи|лши|лм|лф|лц|лч|лш|ля|лют|ляк|ман|мел|мцо|мча|мша|мяш|нак|ник|нох|нтал|нк|нют|нюш|оах|пан|пеш|пиф|пих|пиш|пищ|рак|ран|рас|рах|раш|рга|ргин|рго|рем|рил|рин|рих|рки|рко|рлы|рма|рми|рмо|рму|рог|рон|роп|ротид|роф|рох|рош|руш|рхо|рша|рши|ршо|рыг|рык|рюх|рюш|сау|саф|сен|син|сип|сич|скин|стигн|стиф|ськи|сько|фан|фим|фиш|фре|фро|фте|чеи|чме|шко|шур)/$1ЙЕ$2/gi;
 
+##NEW MRE 2016-06-06
+#	// Zachte adjectieven op -ний
+#	// AANGEPAST OP 22 DECEMBER: samengevoegd, en alternatieve uitgangen toegevoegd: ook type Nizhnii en Nizhnyi wordt nu meegenomen
+#	// Verdubbeling van deze regel moet vanwege de spatiematch aan het begin én het eind.
+#	engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(^|[ -\/])(ближн|верхн|весенн|вечерн|внешн|внутренн|горн|давн|далн|долн|древн|задн|зимн|искренн|крайн|летн|#лишн|нижн|осенн|передн|поздн|последн|прежн|ранн|син|сосдедн|средн|сторонн|утренн)(ы|ый|ии)($|[ -\/,.])/gi, "$1$2ий$4");
+	    #	engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(^|[ -\/])(ближн|верхн|весенн|вечерн|внешн|внутренн|горн|давн|далн|долн|древн|задн|зимн|искренн|крайн|летн|#лишн|нижн|осенн|передн|поздн|последн|прежн|ранн|син|сосдедн|средн|сторонн|утренн)(ы|ый|ии)($|[ -\/,.])/gi, "$1$2ий$4");
+
+	    $in2 =~ s/([ -_\/])(ближн|верхн|весенн|вечерн|внешн|внутренн|горн|давн|далн|долн|древн|задн|зимн|искренн|крайн|летн|лишн|нижн|осенн|передн|поздн|последн|прежн|ранн|син|сосдедн|средн|сторонн|утренн)(ы|ый|ии)($|[ -_\/,.])/$1$2ий$4/gi;
+	    $in2 =~ s/([ -_\/])(ближн|верхн|весенн|вечерн|внешн|внутренн|горн|давн|далн|долн|древн|задн|зимн|искренн|крайн|летн|лишн|нижн|осенн|передн|поздн|последн|прежн|ранн|син|сосдедн|средн|сторонн|утренн)(а)/$1$2я/gi;
+
+	    $in2 =~ s/([бвгдзжйклмнпрстфхцчшщ])ы(ев)/1ь$2/gi;
+	    $in2 =~ s/([бвгдзжйклмнпрстфхцчшщ])ы(и[чн])/$1ь$2/gi;
+
+	    $in2 =~ s/(Нижне)е(токский)/$1э$2/gi;
+	    $in2 =~ s/(У)е(лен)/$1э$2/gi;
+
+#	// TOEGEVOEGD OP 22 DECEMBER: voor de zekerheid ook vrouwelijke vormen als Nizhnaya gefixt: > Nizhnyaya
+#	engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(^|[ -\/])(ближн|верхн|весенн|вечерн|внешн|внутренн|горн|давн|далн|долн|древн|задн|зимн|искренн|крайн|летн|#лишн|нижн|осенн|передн|поздн|последн|прежн|ранн|син|сосдедн|средн|сторонн|утренн)(а)/gi, "$1$2я");
+
+#	// TOEGEVOEGD OP 25 DECEMBER
+#
+#	engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/([бвгдзжйклмнпрстфхцчшщ])ы(ев)/gi, "$1ь$2"); // , Vasilyevna
+#	engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/([бвгдзжйклмнпрстфхцчшщ])ы(и[чн])/gi, "$1ь$2"); // Ilyich, Ilyino...
+#
+#	// HANDMATIGE UITZONDERINGEN
+#	engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(Нижне)(е)(токский)/gi, "$1э$3"); // Нижнеэтокский
+#	engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(У)(е)(лен)/gi, "$1э$3"); // Уэлен
+##NEW MRE 2016-06-06
+	    
 	    ##NEW - mre
     $in2 =~ s/(^|[ -_\/])(Алена)([^А-Я,а-я]|$|[ -_\/,.])/$1Алёна$3/gi;
     $in2 =~ s/(^|[ -_\/])(Артем)([^и]|$|[ -_\/,.])/$1Артём$3/gi;
@@ -410,12 +467,16 @@ if ($name =~ /[A-Za-z]/){
     $in2 =~ s/(Христеня)([^А-Я,а-я]|$|[ -_\/,.])/Христёня$2/gi;
     $in2 =~ s/(Шурена)([^А-Я,а-я]|$|[ -_\/,.])/Шурёна$2/gi;
 	    ##NEW - mre
-
+    ##Added 20160603 MRE
+            #engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(^|[ -\/])Чернышев($|[-\/,. ]|[аеоыу])/gi, "$1Чернышёв$2"); // Afwijkend, want het is wel Чернышевский
+    $in2 =~ s/(^|[ -\/])Чернышев($|[-\/,. ]|[аеоыу])/$1Чернышёв$2/gi;
+	    
     #Евгеневич
     #$in2 =~ s/(^|[ -_\/])(Анатол|Аркад|Арсен|Артем|Васил|Валер|Витал|Геннад|Георг|Григор|Евген|Юр)(ев|иев)/$1$2ьев/g; ##MRE 20160503
-	    $in2 =~ s/(Анатол|Аркад|Арсен|Артем|Васил|Валер|Витал|Геннад|Георг|Григор|Евген|Юр)ев/$1йев/g; ##MRE 20160503
-	    $in2 =~ s/(Анатол|Аркад|Арсен|Артем|Васил|Валер|Витал|Геннад|Георг|Григор|Евген|Юр)иев/$1йев/g; ##MRE 20160503
+	    $in2 =~ s/(Анатол|Аркад|Арсен|Артем|Васил|Валер|Витал|Геннад|Григор|Евген|Юр)ев/$1йев/g; ##MRE 20160503 201600603 Георг| verwijderd
+	    $in2 =~ s/(Анатол|Аркад|Арсен|Артем|Васил|Валер|Витал|Геннад|Григор|Евген|Юр)иев/$1йев/g; ##MRE 20160503 201600603 Георг| verwijderd
 
+	    #Анатол|Аркад|Арсен|Артем|Васил|Валер|Витал|Геннад|Григор|Евген|Юр
 	    
 	    ## Individuele namen fixen
 		#engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/Александер/gi, "Александр"); // Alexander, Aleksander, ...
@@ -430,6 +491,16 @@ if ($name =~ /[A-Za-z]/){
 	    $in2 =~ s/(^|[ -\/])Тчай/$1Чай/gi;
 	    $in2 =~ s/(^|[ -\/])Венями/$1Вениами/gi;
 	    $in2 =~ s/(^|[ -\/])Ил(ич)/$1Иль$2/gi;
+
+	    ##Added 201600603 MRE
+            #engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(Д)(жулет)/gi, "$1жульет"); // Джульетта
+            #engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(Г)(аврийл)/gi, "$1авриил"); // Гавриил
+            #engels_cyrillisch_uitvoer = engels_cyrillisch_uitvoer.replace(/(Д)(анийл)/gi, "$1аниил"); // Даниил
+            #$in2 =~ s/(^|[ -\/])//gi;
+	    $in2 =~ s/Джулет/Джульет/gi; 
+	    $in2 =~ s/Гаврийл/Гавриил/gi;
+	    $in2 =~ s/Данийл/Даниил/gi;
+	    
 	    $in2 =~ s/([А-Я,a-я])(в)(ев|ева|еве|еву|евым|евых|евыми|евой)($|[-\/,. ])/$1$2ь$3$4/gi;
 	    
 	    ## э's in woorden fixen
@@ -825,7 +896,7 @@ if ($name =~ /[A-Za-z]/){
 	        push @output, $generator->addOutput('paspoort-ussr', '<span class="na_field">Not applicable</span>');
 	        push @output, $generator->addOutput('rijbewijs', '<span class="na_field">Not applicable</span>');
 	
-} else {
+}} else {
     my $nlpop = `$rootdir/RU-NL.populair.flex <$tmpdir/$input.txt`;
     $nlpop =~ s/aè/aë/g;
     $nlpop =~ s/Aè/Aë/g;
