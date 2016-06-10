@@ -140,7 +140,7 @@ $name =~ s/([A-Z_-z])ye($|[-\/_ ])/$1ые$2/gi; ## Novye_..._maar wel A.Ye. Yego
 $name =~ s/(yy|yi)($|[-\/_ ])/ый$2/gi; ## Novyy_Novyi
 
 ## HIER VERWIJDERD OP 25 DECEMBER_ACHTERAAN ANDERS TOEGEVOEGD; leverde een probleem op met Piskaryev_dat Piskarjev werd i.p.v. Piskarjov
-##$name =~ s/([bvgdzklmnprstfch])y([ei])/$1ь$2/gi; ## Vasilyevich_Ilyich_...
+##$name =~ s/([bvgdzklmnprstfch])y([ei])/$1ь$2/gi; ## evich_Ilyich_...
 
 $name =~ s/([aeiou])y($|[-\/_ ])/$1й$2/gi; ## Aleksey_Novoy
 $name =~ s/([aeou])i($|[-\/_ ])/$1й$2/gi; ## Aleksei_Novoi (niet: Partii)
@@ -338,7 +338,7 @@ if ($name =~ /[A-Za-z]/){
 	    $in2 =~ s/([ -_\/])(ближн|верхн|весенн|вечерн|внешн|внутренн|горн|давн|далн|долн|древн|задн|зимн|искренн|крайн|летн|лишн|нижн|осенн|передн|поздн|последн|прежн|ранн|син|сосдедн|средн|сторонн|утренн)(ы|ый|ии)($|[ -_\/,.])/$1$2ий$4/gi;
 	    $in2 =~ s/([ -_\/])(ближн|верхн|весенн|вечерн|внешн|внутренн|горн|давн|далн|долн|древн|задн|зимн|искренн|крайн|летн|лишн|нижн|осенн|передн|поздн|последн|прежн|ранн|син|сосдедн|средн|сторонн|утренн)(а)/$1$2я/gi;
 
-	    $in2 =~ s/([бвгдзжйклмнпрстфхцчшщ])ы(ев)/1ь$2/gi;
+	    $in2 =~ s/([бвгдзжйклмнпрстфхцчшщ])ы(ев)/$1ь$2/gi; ##????? Dot het niet? Cf. fouten Ndls Advies
 	    $in2 =~ s/([бвгдзжйклмнпрстфхцчшщ])ы(и[чн])/$1ь$2/gi;
 
 	    $in2 =~ s/(Нижне)е(токский)/$1э$2/gi;
@@ -609,6 +609,7 @@ if ($name =~ /[A-Za-z]/){
   $nlpop =~ s/YÈ/YË/g;
   $nlpop =~ s/yÈ/yë/g;
 
+  ##HERE
   $nlpop =~ s/è/e/g;
   $nlpop =~ s/È/E/g;
 
@@ -641,6 +642,13 @@ if ($name =~ /[A-Za-z]/){
   $nlpop =~ s/oe_/oje_/i;
 
   $nlpop =~ s/eev/ejev/i;
+
+      $nlpop =~ s/oev/ojev/i;
+      $nlpop =~ s/eva/jeva/i;
+      $nlpop =~ s/evka/jevka/i;
+      $nlpop =~ s/mev$/mjev/i;
+    $nlpop =~ s/ienko/iënko/i;
+    
   $nlpop =~ s/rev$/rjev/i;
   $nlpop =~ s/iev$/iëv/i;
   $nlpop =~ s/asev$/asjev/i;
@@ -654,7 +662,7 @@ if ($name =~ /[A-Za-z]/){
   $nlpop =~ s/Aleksander/Aleksandr/;
   $nlpop =~ s/aev$/ajev/i;
   $nlpop =~ s/aev_/ajev_/i;
-  $nlpop =~ s/E\./Je\./i;
+  #$nlpop =~ s/E\./Je\./i;
   $nlpop =~ s/lev$/ljev/i;
   $nlpop =~ s/jonov$/ionov/i;
   $nlpop =~ s/vilj$/vili/i;
@@ -663,9 +671,15 @@ if ($name =~ /[A-Za-z]/){
   $nlpop =~ s/lev_/ljev_/i;
   $nlpop =~ s/oevski$/ojevski/i;
   $nlpop =~ s/-soje/-Soe/i;
+
+    $nlpop =~ s/evitsj$/jevitsj/i;
+    $nlpop =~ s/evitsj_/jevitsj_/i;
+
   $nlpop =~ s/jj/j/i;
   $nlpop =~ s/potsjtalon/potsjtaljon/;  
 
+
+    
   $nlpop =~ s/ij$/i/i;
   $nlpop =~ s/y$/i/i;
   $nlpop =~ s/yj$/y/i;
@@ -734,6 +748,10 @@ if ($name =~ /[A-Za-z]/){
     $nlpop =~ s/Fedor_/Fjodor_/gi; ##MRE 20160429
   #Novyje_Boety >< Novje_Boety [-]
     $nlpop =~ s/Novje/Novyje/i;
+
+    $nlpop =~ s/Nizjnee/Nizjneje/i;
+    $nlpop =~ s/arjev$/arev/i;
+    $nlpop =~ s/eljev$/elev/i;
     
         #Ksenia_Ljapina >< Ksenja_Ljapina [-]
 	#Zviad_Gamsachoerdia >< Zvjad_Gamsachoerdja [-]
@@ -755,7 +773,55 @@ if ($name =~ /[A-Za-z]/){
   #$nlpop =~ s/_Je/_@/g;
   #$nlpop =~ s/_E/_Je/g;
   #$nlpop =~ s/_@/_E/g;  
-  
+
+##2nd Testset ENGLISH INPUT
+   $nlpop =~ s/ajl/ail/g;  
+   $nlpop =~ s/Michailovitsj/Michajlovitsj/g;
+   $nlpop =~ s/jajev$/iajev/g;
+   $nlpop =~ s/aevski$/ajevski/g;
+   $nlpop =~ s/ijev/iëv/g;
+   $nlpop =~ s/^Io/Jo/g;
+   $nlpop =~ s/lja$/lia/g;
+   $nlpop =~ s/lja_/lia_/g;  
+   $nlpop =~ s/aenko$/ajenko/g;
+   $nlpop =~ s/ljeva$/leva/g;
+   $nlpop =~ s/ljeva_/leva_/g;
+   $nlpop =~ s/oeyko$/oejko/g;
+   $nlpop =~ s/Vorobev/Vorobjov/g;
+   $nlpop =~ s/Najdenov/Najdjonov/g;
+   $nlpop =~ s/Vasileva/Vasiljeva/g;
+   $nlpop =~ s/Anastasja/Anastasia/g;   
+   $nlpop =~ s/Michailovna/Michajlovna/g;
+   $nlpop =~ s/Marja/Maria/g;
+   $nlpop =~ s/Snegirjev/Snegirjov/g;
+   $nlpop =~ s/letta_/ljetta_/g;
+   $nlpop =~ s/letta$/ljetta/g;
+   $nlpop =~ s/Bachtjarov/Bachtiarov/g;
+   $nlpop =~ s/Kjoetsjarjants/Kjoetsjariants/g;
+   $nlpop =~ s/Tsjernysjev/Tsjernysjov/g;
+   $nlpop =~ s/Dokoetsiajev/Dokoetsjajev/g;
+   $nlpop =~ s/Dmitrjevna/Dmitriëvna/g;
+   $nlpop =~ s/Ilia/Ilja/g;
+   $nlpop =~ s/Kopjevski/Kopiëvski/g;
+   $nlpop =~ s/Josif_Aleksandrovitsj/Iosif_Aleksandrovitsj/g;
+   $nlpop =~ s/Poleziajev/Polezjajev/g;
+   $nlpop =~ s/Begitsjevo/Begitsjovo/g;
+   $nlpop =~ s/Berezovaja/Berjozovaja/g;
+    $nlpop =~ s/Lachoety/Lachoeti/g;
+    $nlpop =~ s/Jablonevi/Jablonevy/g;
+    $nlpop =~ s/Koeljoebintsi/Koeljoebintsy/g;
+    $nlpop =~ s/Ljodor/Liodor/g;
+    $nlpop =~ s/Mojsejev/Moisejev/g;
+    $nlpop =~ s/Nikolaevski/Nikolajevski/g;
+    $nlpop =~ s/Poskrebysjev/Poskrjobysjev/g;
+    $nlpop =~ s/Solovi/Solovji/g;
+    $nlpop =~ s/Tsjertovo/Tsjortovo/g;
+    $nlpop =~ s/Bazji/Bazjy/g;
+
+	##Iosif_Aleksandrovitsj_Dmitriëv >< Josif_Aleksandrovitsj_Dmitriëv [-] !!!!
+    
+#$nlpop =~ s///g;
+##NU
    $nlpop =~ s/_/ /g if ($debug !~ /D/);
    $generator->addOutput('populair', $nlpop);    
 
@@ -963,38 +1029,74 @@ if ($name =~ /[A-Za-z]/){
     $nlpop =~ s/oOE/oöe/g;
     $nlpop =~ s/O-OE/OÖE/g;
 
-    $nlpop =~ s/oe$/oje/i;
-    $nlpop =~ s/oe_/oje_/i;
+    $nlpop =~ s/E/Je/g;
+    $nlpop =~ s/È/E/g;
+    
+  $nlpop =~ s/oe$/oje/i;
+  $nlpop =~ s/oe_/oje_/i;
 
-    $nlpop =~ s/Novye/Novyje/;
+  $nlpop =~ s/eev/ejev/i;
 
-    $nlpop =~ s/eev/ejev/i;
-    $nlpop =~ s/rev$/rjev/i;
-    $nlpop =~ s/iev$/iëv/i;
-    $nlpop =~ s/asev$/asjev/i;
-    $nlpop =~ s/rev_/rjev_/i;
-    $nlpop =~ s/iev_/iëv_/i;
-    $nlpop =~ s/asev_/asjev_/i;
-    $nlpop =~ s/Ilitsj/Iljitsj/i;
-    $nlpop =~ s/aev$/ajev/i;
-    $nlpop =~ s/aev_/ajev_/i;
-    $nlpop =~ s/E\./Je\./i;
-    $nlpop =~ s/^E/Je/; ##NEW
-    $nlpop =~ s/_E/_Je/; ##NEW
+      $nlpop =~ s/oev/ojev/i;
+    $nlpop =~ s/eva$/jeva/i;
+    $nlpop =~ s/eva_/jeva_/i;
+      $nlpop =~ s/evka/jevka/i;
+      $nlpop =~ s/mev$/mjev/i;
+      $nlpop =~ s/aenko/ajenko/i;
+    $nlpop =~ s/ijevi/iëvi/i;
+    $nlpop =~ s/iev/iëv/i;
+    $nlpop =~ s/ienko/iënko/i;
+      #$nlpop =~ s/aenko/ajenko/i;
+    
+  $nlpop =~ s/rev$/rjev/i;
+  $nlpop =~ s/iev$/iëv/i;
+  $nlpop =~ s/asev$/asjev/i;
+  $nlpop =~ s/rev_/rjev_/i;
+  $nlpop =~ s/iev_/iëv_/i;
+  $nlpop =~ s/oviëv$/ovjov/i; ##20160503
+  $nlpop =~ s/oviëv_/ovjov_/i; ##20160503
+  $nlpop =~ s/asev_/asjev_/i;
+  $nlpop =~ s/Ilitsj/Iljitsj/i;
+  $nlpop =~ s/Ilyitsj/Iljitsj/i;
+  $nlpop =~ s/Aleksander/Aleksandr/;
+  $nlpop =~ s/aev$/ajev/i;
+  $nlpop =~ s/aev_/ajev_/i;
+  $nlpop =~ s/E\./Je\./i;
+  $nlpop =~ s/lev$/ljev/i;
+  $nlpop =~ s/jonov$/ionov/i;
+  $nlpop =~ s/vilj$/vili/i;
+  $nlpop =~ s/Genrj/Genri/i;
+  $nlpop =~ s/ovljev$/ovlev/i;
+  $nlpop =~ s/lev_/ljev_/i;
+  $nlpop =~ s/oevski$/ojevski/i;
+  $nlpop =~ s/-soje/-Soe/i;
 
-    $nlpop =~ s/è/e/g; ##MOVED
-    $nlpop =~ s/È/E/g; ##MOVED
+    $nlpop =~ s/evitsj$/jevitsj/i;
+    $nlpop =~ s/evitsj_/jevitsj_/i;
 
-    $nlpop =~ s/lev$/ljev/i;
+  $nlpop =~ s/jj/j/i;
+  $nlpop =~ s/potsjtalon/potsjtaljon/;
 
-    $nlpop =~ s/ovljev$/ovlev/i;
+    $nlpop =~ s/Novye/Novyje/i;
+    $nlpop =~ s/Nizjnee/Nizjneje/i;
+    $nlpop =~ s/arjev$/arev/i;
+    $nlpop =~ s/eljev$/elev/i;
 
-    $nlpop =~ s/lev_/ljev_/i;
-    $nlpop =~ s/toevski/tojevski/i;
-    $nlpop =~ s/-soje/-Soe/i;
-    $nlpop =~ s/jj/j/i; 
-    $nlpop =~ s/potsjtalon/potsjtaljon/;
-
+    $nlpop =~ s/ileva$/iljeva/i;
+        $nlpop =~ s/Dogiljeva/Dogileva/i;
+    $nlpop =~ s/dionov$/djonov/i;
+    $nlpop =~ s/letta$/ljetta/i;
+    $nlpop =~ s/letta_/ljetta_/i;
+    $nlpop =~ s/devna$/djevna/i;
+    $nlpop =~ s/devna_/djevna_/i;
+    $nlpop =~ s/genevna$/genjevna/i;
+    $nlpop =~ s/genevna_/genjevna_/i;
+    $nlpop =~ s/Solovi$/Solovji/i;
+    $nlpop =~ s/aevski_/ajevski_/i;
+    $nlpop =~ s/aevski$/ajevski/i;
+    $nlpop =~ s/è/e/g;
+    $nlpop =~ s/Michaljevitsj/Michalevitsj/i;
+    $nlpop =~ s/\.je\./\.Je\./g;
     #Sergej_Jakovlev >< Sergej_Jakovljev [-]
     #Novyje_Boety >< Novye_Boety [-]
 
@@ -1093,6 +1195,30 @@ if ($name =~ /[A-Za-z]/){
     $wiki =~ s/ilev_/iljev_/g;
     $wiki =~ s/potsjtalon/potsjtaljon/;
 
+    ##2nd Testset
+    $wiki =~ s/evitsj/jevitsj/g;
+
+        #Vera_Vasiljeva >< Vera_Vasileva [-]
+	#Dzjoeljetta_Artoerovna_Kjoetsjariants >< Dzjoeletta_Artoerovna_Kjoetsjariants [-]
+	#Aleksandr_Spiridonovitsj_Artemjev >< Aleksandr_Spiridonovitsj_Artemev [-]
+	#Tatjana_Gennadjevna_Terechova >< Tatjana_Gennadevna_Terechova [-]
+	#Alla_Jevgenjevna_Osipenko >< Alla_Jevgenevna_Osipenko [-]
+	#Marina_Aleksandrovna_Vasiljeva >< Marina_Aleksandrovna_Vasileva [-]
+	#Solovji >< Solovi [-]
+
+    $wiki =~ s/Vasileva/Vasiljeva/g;
+    $wiki =~ s/letta_/ljetta_/g;
+    $wiki =~ s/letta$/ljetta/g;
+    $wiki =~ s/Artemev/Artemjev/g;
+    $wiki =~ s/Gennadevna/Gennadjevna/g;
+    $wiki =~ s/Jevgenevna/Jevgenjevna/g;
+    $wiki =~ s/Solovi/Solovji/g;
+    #$wiki =~ s///g;
+    
+    $wiki =~ s/jj/j/g;
+
+##NU
+    
         $wiki =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('wikipedia', "$wiki");
 
@@ -1117,11 +1243,13 @@ if ($name =~ /[A-Za-z]/){
 	#Kuiyogan >< Kuyyogan [-]
 	#khimichesky_eksperiment >< khimichesky_experiment [-]
 
-	$englishpop =~ s/(Aleksandr)([^A-Za-z]|$|,|_)/Alexander$2/gi;
+	#$englishpop =~ s/(Aleksandr)([^A-Za-z]|$|,|_)/Alexander$2/gi;
     $englishpop =~ s/Aleksandr/Alexandr/gi;
-    $englishpop =~ s/Alexandr/Alexander/gi;
-    $englishpop =~ s/(Aleksei)([^A-Z,a-z]|$|,|_)/Alexei$2/gi;
-    $englishpop =~ s/(Alexeyevn)/Alekseyevn/gi;
+    $englishpop =~ s/Alexandr$/Alexander/gi;
+    $englishpop =~ s/Alexandr_/Alexander_/gi;
+    #$englishpop =~ s/(Aleksei)([^A-Z,a-z]|$|,|_)/Alexei$2/gi;
+    $englishpop =~ s/Alexe/Alekse/gi;
+    $englishpop =~ s/Aleksei/Alexei/gi;
     $englishpop =~ s/experiment/eksperiment/g;
     $englishpop =~ s/Mayya/Maiya/g;
     $englishpop =~ s/Vasilev/Vasilyev/g;
@@ -1136,6 +1264,9 @@ if ($name =~ /[A-Za-z]/){
     $englishpop =~ s/E\./Ye\./g;
     $englishpop =~ s/Evtu/Yevtu/g;
 
+    $englishpop =~ s/evich$/yevich/g;
+    $englishpop =~ s/evich_/yevich_/g;
+    
         #Mustafa_Naiyem >< Mustafa_Naiem [-]
 	#Novorossiysk >< Novorossysk [-]
 	#Musiykongiykote >< Musykongykote [-]
@@ -1152,6 +1283,32 @@ if ($name =~ /[A-Za-z]/){
     $englishpop =~ s/Piskarev/Piskaryov/;
     $englishpop =~ s/Slepnev/Slepnyov/;
 
+    ##2de testset
+        #Dzhulyetta_Arturovna_Kyuchariants >< Dzhuletta_Arturovna_Kyuchariants [-]
+	#Maks_Yefremovich_Gindenburg >< Max_Yefremovich_Gindenburg [-]
+	#Nikolai_Yevgenyevich_Lansere >< Nikolai_Evgenyevich_Lansere [-]
+	#Mariya_Dmitriyevna_Aksyonova >< Mariya_Dmitriyevna_Axyonova [-]
+	#Alexander_Spiridonovich_Artemyev >< Alexander_Spiridonovich_Artemev [-]
+	#Tatiana_Gennadyevna_Terekhova >< Tatiana_Gennadevna_Terekhova [-]
+	#Alla_Yevgenyevna_Osipenko >< Alla_Yevgenevna_Osipenko [-]
+	#Kurichyevo >< Kurichevo [-]
+
+    $englishpop =~ s/letta$/lyetta/gi;
+    $englishpop =~ s/letta_/lyetta_/gi;
+    $englishpop =~ s/Max$/Maks/gi;
+    $englishpop =~ s/Max_/Maks_/gi;
+    $englishpop =~ s/Evgenyevich/Yevgenyevich/gi;
+    $englishpop =~ s/Axyon/Aksyon/gi;
+    $englishpop =~ s/Artemev/Artemyev/gi;
+    $englishpop =~ s/Gennadevna/Gennadyevna/gi;
+    $englishpop =~ s/Yevgenevna/Yevgenyevna/gi;
+    $englishpop =~ s/Kurichevo/Kurichyevo/gi;
+    ##1ste set
+    $englishpop =~ s/Mikhalyevich/Mikhalevich/gi;
+    
+    
+    $englishpop =~ s/yy/y/gi;
+    
         $englishpop =~ s/_/ /g if ($debug !~ /D/);
         push @output, $generator->addOutput('populair-engels', "$englishpop");
 	
@@ -1191,6 +1348,45 @@ if ($name =~ /[A-Za-z]/){
 	#Sergei_Jakowlew >< Sergei_Jakowljew [-]
 	#Mussikjongikote >< Mussikongikote [-]
 
+    ##2nd Testset
+    #ewitsch/jewitsch Ossero/Osero
+
+    $germanpop =~ s/ewitsch/jewitsch/g;
+    $germanpop =~ s/Ossero/Osero/g;
+
+        #Wera_Wassiljewa >< Wera_Wassilewa [-]
+	#Dschuljetta_Arturowna_Kjutscharianz >< Dschuletta_Arturowna_Kjutscharianz [-]
+	#Alexandr_Spiridonowitsch_Artemjew >< Alexandr_Spiridonowitsch_Artemew [-]
+	#Stepan_Iwanowitsch_Pissarew >< Stepan_Iwanowitsch_Pissarjew [-]
+	#Tatjana_Gennadjewna_Terechowa >< Tatjana_Gennadewna_Terechowa [-]
+	#Alla_Jewgenjewna_Ossipenko >< Alla_Jewgenewna_Ossipenko [-]
+	#Marina_Alexandrowna_Wassiljewa >< Marina_Alexandrowna_Wassilewa [-]
+	#Tschortowo_Boloto >< Tsjortowo_Boloto [-]
+	#Afanasjewka >< Afanassewka [-]
+	#Begitschowo >< Begitsjowo [-]
+	#Kossa_Niskaja >< Kosa_Niskaja [-]
+	#Solowji >< Solowi [-]
+	#Kuritschjewo >< Kuritschewo [-]
+
+    $germanpop =~ s/Wassilewa/Wassiljewa/g;
+    $germanpop =~ s/letta_/ljetta_/g;
+    $germanpop =~ s/letta$/ljetta/g;
+    $germanpop =~ s/Artemew/Artemjew/g;
+    $germanpop =~ s/Pissarjew/Pissarew/g;
+    $germanpop =~ s/Gennadewna/Gennadjewna/g;
+    $germanpop =~ s/Jewgenjewna/Jewgenewna/g;
+    $germanpop =~ s/Tsj/Tsch/g;
+    $germanpop =~ s/tsj/tsch/g;
+    $germanpop =~ s/Afanassewka/Afanasjewka/g;
+    $germanpop =~ s/Kosa/Kossa/g;
+    $germanpop =~ s/Solowi/Solowji/g;
+    $germanpop =~ s/Kuritschewo/Kuritschjewo/g;
+
+    $germanpop =~ s/Jewgenewna/Jewgenjewna/g;
+    $germanpop =~ s/Michaljewitsch/Michalewitsch/g;
+    
+    $germanpop =~ s/jj/j/g;
+    
         $germanpop =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('populair-duits', "$germanpop");
 
