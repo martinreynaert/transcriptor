@@ -326,7 +326,7 @@ my $effe      = ();
 if ( $name =~ /[A-Za-z]/ ) {
 	if ( $name =~ /^INVALID$/ ) {
 		##Print ERROR MESSAGE saying one cannot mix Latin and Cyrillic scripts in the input
-		#$generator->addError('populair', '<span class="na_field">Invalid Input: Please do not mix Latin and Cyrillic scripts in the input.</span>');
+		#$generator->addError('populair', 'Invalid Input: Please do not mix Latin and Cyrillic scripts in the input.');
 		$generator->addError( 'populair','Ongeldige Input: Gelieve de Latijnse en Cyrillische scripts niet te mengen in de input.');
 	} else {
 		open( IN3, ">$tmpdir/$input.txt" );
@@ -968,21 +968,21 @@ if ( $name =~ /[A-Za-z]/ ) {
 			print TEST "@debug\n";
 		}
 
-		$generator->addOutput( 'ALA-LC','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'ALA-LC-simpel','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'wetenschappelijk','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'BGN-PCGN','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'BGN-PCGN-simpel','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'british-standard','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'GOST-1983','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'GOST-2000b','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'GOST-2004','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'GOST_R_52535.1-2006','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'ICAO','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'ISO9-1995','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'paspoort-1997-2010','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'paspoort-ussr','<span class="na_field">Not applicable</span>' );
-		$generator->addOutput( 'rijbewijs','<span class="na_field">Not applicable</span>' );
+		$generator->addNotApplicable( 'ALA-LC' );
+		$generator->addNotApplicable( 'ALA-LC-simpel' );
+		$generator->addNotApplicable( 'wetenschappelijk' );
+		$generator->addNotApplicable( 'BGN-PCGN' );
+		$generator->addNotApplicable( 'BGN-PCGN-simpel' );
+		$generator->addNotApplicable( 'british-standard' );
+		$generator->addNotApplicable( 'GOST-1983' );
+		$generator->addNotApplicable( 'GOST-2000b' );
+		$generator->addNotApplicable( 'GOST-2004' );
+		$generator->addNotApplicable( 'GOST_R_52535.1-2006' );
+		$generator->addNotApplicable( 'ICAO' );
+		$generator->addNotApplicable( 'ISO9-1995' );
+		$generator->addNotApplicable( 'paspoort-1997-2010' );
+		$generator->addNotApplicable( 'paspoort-ussr' );
+		$generator->addNotApplicable( 'rijbewijs' );
 
 	}
 } else {
