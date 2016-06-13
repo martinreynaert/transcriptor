@@ -968,22 +968,6 @@ if ( $name =~ /[A-Za-z]/ ) {
 			print TEST "@debug\n";
 		}
 
-		$generator->addNotApplicable( 'ALA-LC' );
-		$generator->addNotApplicable( 'ALA-LC-simpel' );
-		$generator->addNotApplicable( 'wetenschappelijk' );
-		$generator->addNotApplicable( 'BGN-PCGN' );
-		$generator->addNotApplicable( 'BGN-PCGN-simpel' );
-		$generator->addNotApplicable( 'british-standard' );
-		$generator->addNotApplicable( 'GOST-1983' );
-		$generator->addNotApplicable( 'GOST-2000b' );
-		$generator->addNotApplicable( 'GOST-2004' );
-		$generator->addNotApplicable( 'GOST_R_52535.1-2006' );
-		$generator->addNotApplicable( 'ICAO' );
-		$generator->addNotApplicable( 'ISO9-1995' );
-		$generator->addNotApplicable( 'paspoort-1997-2010' );
-		$generator->addNotApplicable( 'paspoort-ussr' );
-		$generator->addNotApplicable( 'rijbewijs' );
-
 	}
 } else {
 	my $nlpop = `$rootdir/RU-NL.populair.flex <$tmpdir/$input.txt`;
