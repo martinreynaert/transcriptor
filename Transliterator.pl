@@ -38,7 +38,7 @@ if ($name =~ /_OTH$/) {
 }
 
 ##In array duwen, elk stukje first char uppercasen, indien stukje zelfde als vorige: weggooien --BEGIN
-print STDERR "NAME1: $name\n";
+#print STDERR "NAME1: $name\n";
 my @NAME = split /_/, $name;
 $name = ();
 my $prevnaam = '';
@@ -55,7 +55,7 @@ foreach my $naam (@NAME){
 $prevnaam = $naam;
 }
 $name =~ s/_$//;
-print STDERR "NAME2: $name\n";
+#print STDERR "NAME2: $name\n";
 ##In array duwen, elk stukje first char uppercasen, indien stukje zelfde als vorige: weggooien --END
 
 my @chars = ("A".."Z", "a".."z", "0..9");
@@ -73,7 +73,7 @@ for my $i (1..8) {
 #for my $i (1..8) {
 #    $input3 .= $chars[rand(@chars)];
 #}
-print IN2 "IN2: $name TYPE: $type\n";
+#print IN2 "IN2: $name TYPE: $type\n";
 close IN2;
 
 # Save input
@@ -739,41 +739,19 @@ if ($name =~ /[A-Za-z]/){
     $nlpop =~ s/Dzje/Dzjo/g;
     $nlpop =~ s/Je\.V\./Jo\.V\./g;
     
-    $nlpop =~ s/Natalja_Aleksejevna_Narotsjnitskaja/Natalia_Aleksejevna_Narotsjnitskaja/;
+    #$nlpop =~ s/Natalja_Aleksejevna_Narotsjnitskaja/Natalia_Aleksejevna_Narotsjnitskaja/;
 
     $nlpop =~ s/yj/j/gi; ##MRE 20160429
     $nlpop =~ s/Petr$/Pjotr/gi; ##MRE 20160429
     $nlpop =~ s/Fedor$/Fjodor/gi; ##MRE 20160429
     $nlpop =~ s/Petr_/Pjotr_/gi; ##MRE 20160429
     $nlpop =~ s/Fedor_/Fjodor_/gi; ##MRE 20160429
-  #Novyje_Boety >< Novje_Boety [-]
     $nlpop =~ s/Novje/Novyje/i;
 
     $nlpop =~ s/Nizjnee/Nizjneje/i;
     $nlpop =~ s/arjev$/arev/i;
     $nlpop =~ s/eljev$/elev/i;
     
-        #Ksenia_Ljapina >< Ksenja_Ljapina [-]
-	#Zviad_Gamsachoerdia >< Zvjad_Gamsachoerdja [-]
-	#Andrej_Illarionov >< Andrej_Illarjonov [-]
-	#Diana_Mnatsakanjan >< Djana_Mnatsakanjan [-]
-	#Aljosja_Gippioes >< Aljosja_Gippjoes [-]
-	#Veniamin_Illarionov >< Venjamin_Illarjonov [-]
-	#Natalia_Aleksejevna_Narotsjnitskaja >< Natalja_Aleksejevna_Narotsjnitskaja [-]
-	#Vyoetsjejski >< Vjoetsjeiski [-]
-	#Tyoekit >< Tjoekit [-]
-	#Sjekpеër >< Sjekpeer [-]
-	#Oën-Soe >< Oen-Soe [-]
-
-        #Natalja_Aleksejevna >< Natalia_Aleksejevna [-]
-	#Diana_Mnatsakanjan >< Djana_Mnatsakanjan [-]
-    
-  #$nlpop =~ s/^E/Je/g;  
-  #$nlpop =~ s/@/E/g;
-  #$nlpop =~ s/_Je/_@/g;
-  #$nlpop =~ s/_E/_Je/g;
-  #$nlpop =~ s/_@/_E/g;  
-
 ##2nd Testset ENGLISH INPUT
    $nlpop =~ s/ajl/ail/g;  
    $nlpop =~ s/Michailovitsj/Michajlovitsj/g;
@@ -818,10 +796,22 @@ if ($name =~ /[A-Za-z]/){
     $nlpop =~ s/Tsjertovo/Tsjortovo/g;
     $nlpop =~ s/Bazji/Bazjy/g;
 
+    ##1st Testset
+	$nlpop =~ s/Sjevastopol/Sevastopol/g;
+        $nlpop =~ s/Michailovski/Michajlovski/g; 
+        $nlpop =~ s/E\.V\./Jo\.V\./g;
+        $nlpop =~ s/A\.E\./A\.Je\./g;
+        $nlpop =~ s/Michaljevitsj/Michalevitsj/g;
+
+   $nlpop =~ s/Natalia/Natalja/;
+   $nlpop =~ s/Natalja_Aleksejevna_Narotsjnitskaja/Natalia_Aleksejevna_Narotsjnitskaja/;
+   #$nlpop =~ s/Natalja_Aleksejevna/Natalia_Aleksejevna/;    
+   #Natalja_Aleksejevna >< Natalia_Aleksejevna [-]
+
 	##Iosif_Aleksandrovitsj_Dmitriëv >< Josif_Aleksandrovitsj_Dmitriëv [-] !!!!
     
-#$nlpop =~ s///g;
-##NU
+    #$nlpop =~ s///g;
+    
    $nlpop =~ s/_/ /g if ($debug !~ /D/);
    $generator->addOutput('populair', $nlpop);    
 
@@ -1217,6 +1207,9 @@ if ($name =~ /[A-Za-z]/){
     
     $wiki =~ s/jj/j/g;
 
+    #Ales_Michalevitsj >< Ales_Michaljevitsj [-]
+    $wiki =~ s/Michaljevitsj/Michalevitsj/g;
+    
 ##NU
     
         $wiki =~ s/_/ /g if ($debug !~ /D/);
@@ -1433,6 +1426,21 @@ if ($name =~ /[A-Za-z]/){
     $BGN =~ s/Ë\./Yë\./;
     $BGN =~ s/E\./Ye\./; ##NEW
     $BGN =~s/Uëg/Uyyëg/;
+
+    ##2nd Test Set
+
+	$BGN =~ s/aenko$/ayenko/g;
+        $BGN =~ s/aenko_/ayenko_/g;
+        $BGN =~ s/’ëv$/’yëv/;
+        $BGN =~ s/etta$/yetta/;
+        $BGN =~ s/etta_/yetta_/;
+        $BGN =~ s/ienko$/iyenko/;
+        $BGN =~ s/oe$/oye/;
+        $BGN =~ s/oe_/oye_/;
+        $BGN =~ s/nee_/neye_/;
+        $BGN =~ s/nee$/neye/;
+        #$BGN =~ s///;
+        #$BGN =~ s///;
     
     $BGN =~ s/_/ /g if ($debug !~ /D/);
     push @output, $generator->addOutput('BGN-PCGN', "$BGN");
@@ -1465,10 +1473,21 @@ if ($name =~ /[A-Za-z]/){
     $BGNs =~ s/chyov$/chev/; ##NEW
     $BGNs =~ s/Musykongykote/Musiykongiykote/; ##NEW
     
-        #Kseniya_Lyapina >< Ksenya_Lyapina [-]
-	#Arkady_Bashlachev >< Arkady_Bashlachyov [-]
-	#Nataliya_Alekseyevna_Narochnitskaya >< Natalya_Alekseyevna_Narochnitskaya [-]
-	#Musiykongiykote >< Musykongykote [-]
+    ##2nd Testset
+	$BGNs =~ s/aenko$/ayenko/g;
+        $BGNs =~ s/aenko_/ayenko_/g;
+        $BGNs =~ s/etta$/yetta/;
+        $BGNs =~ s/etta_/yetta_/;
+        $BGNs =~ s/ienko$/iyenko/;
+        $BGNs =~ s/Chernyshyov/Chernyshev/;
+        $BGNs =~ s/yayev$/iyayev/;
+        $BGNs =~ s/oe$/oye/;
+        $BGNs =~ s/oe_/oye_/;
+        $BGNs =~ s/Chyortovo/Chortovo/;
+        $BGNs =~ s/Begichyovo/Begichovo/;
+        $BGNs =~ s/nee_/neye_/;
+        $BGNs =~ s/nee$/neye/;
+            #$BGN =~ s///;      
 
         $BGNs =~ s/_/ /g if ($debug !~ /D/);
         push @output, $generator->addOutput('BGN-PCGN-simpel', "$BGNs");
@@ -1501,6 +1520,25 @@ if ($name =~ /[A-Za-z]/){
     $gost04 =~ s/chyev$/chev/;
     $gost04 =~ s/chyev_/chev_/;
 
+    ##2nd Testset
+	
+	$gost04 =~ s/aenko$/ayenko/;
+        $gost04 =~ s/Vorob’yev/Vorob’yov/;
+        $gost04 =~ s/etta$/yetta/;
+        $gost04 =~ s/etta_/yetta_/;   
+        $gost04 =~ s/ienko$/iyenko/;
+        $gost04 =~ s/shyev$/shev/;
+        $gost04 =~ s/chaev$/chayev/;
+        $gost04 =~ s/noe$/noye/;
+        $gost04 =~ s/Chyertovo/Chertovo/;
+        $gost04 =~ s/khoe_/khoye_/;
+        $gost04 =~ s/zhnee_/zhneye_/;
+        $gost04 =~ s/chyevo$/chevo/;
+        $gost04 =~ s/chyevo_/chevo_/;
+        $gost04 =~ s/oe_/oye_/;
+        $gost04 =~ s/Gimaev/Gimayev/; 
+        #$gost04 =~ s///;
+    
         $gost04 =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('GOST-2004', "$gost04");
 
@@ -1555,8 +1593,12 @@ if ($name =~ /[A-Za-z]/){
 	$pp2010 =~ s/Yuliya/Yulia/gi;
 	$pp2010 =~ s/Yakov/Iakov/gi;
 
+    ##2nd Testset 
 
-    
+    $pp2010 =~ s/Vorobyev/Vorob'ev/g;
+    $pp2010 =~ s/'etta_/yetta_/g;
+    $pp2010 =~ s/'etta$/yetta/g;
+
         $pp2010 =~ s/yy/y/g;
 
         $pp2010 =~ s/Maya/Mayya/g; ##NEW
@@ -1566,11 +1608,6 @@ if ($name =~ /[A-Za-z]/){
 
     my $ppUSSR = `$rootdir/RU-EN.paspoort-ussr.flex <$tmpdir/$input.txt`;
     
-        #Igor_Grigoriev >< Igor_Grigorev [-]
-	#Victor_Kozlov >< Viktor_Kozlov [-]
-	#Victor_Gouminski >< Viktor_Gouminski [-]
-	#Dmitri_Afanassiev >< Dmitri_Afanassev [-]
-	#E.V._Vassiliev >< E.V._Vassilev [-]
               $ppUSSR =~ s/ii$/i/gi;
               $ppUSSR =~ s/ii_/i_/gi;
               $ppUSSR =~ s/ii-/i-/gi;
@@ -1590,6 +1627,45 @@ if ($name =~ /[A-Za-z]/){
     $ppUSSR =~ s/Grigorev/Grigoriev/;
     $ppUSSR =~ s/Vassilev/Vassiliev/g;
 
+    ##2nd Testset
+
+
+	$ppUSSR =~ s/evitch_/ievitch_/g;
+        #$ppUSSR =~ s/evitch$/ievitch/g;
+        $ppUSSR =~ s/etta_/ietta_/g;
+        $ppUSSR =~ s/etta$/ietta/g;
+        $ppUSSR =~ s/Artemev/Artemiev/g;
+        $ppUSSR =~ s/devna_/dievna_/g;
+        $ppUSSR =~ s/devna$/dievna/g;
+
+        $ppUSSR =~ s/evna_/ievna_/g;
+        $ppUSSR =~ s/evna$/ievna/g;
+
+        $ppUSSR =~ s/Kouritchevo$/Kouritchievo/g;
+
+    $ppUSSR =~ s/ii/i/g;
+
+	$ppUSSR =~ s/Ioulia/Iouliia/g;
+        $ppUSSR =~ s/Anastassia/Anastassiia/g;
+        $ppUSSR =~ s/eievitch_/eevitch_/g;
+        $ppUSSR =~ s/Maria/Mariia/g;
+        $ppUSSR =~ s/aievitch_/aevitch_/g;
+        $ppUSSR =~ s/Izguiaev/Izguiiaev/g;
+        $ppUSSR =~ s/Gavril/Gavriil/g;
+
+    ##1st Testset
+
+        #Nataliia_Alexeevna_Narotchnitskaia >< Natalia_Alexeevna_Narotchnitskaia [-]
+        #$ppUSSR =~ s/Natalia_Alexeevna_Narotchnitskaia/Nataliia_Alexeevna_Narotchnitskaia/g;
+        $ppUSSR =~ s/Natalia_Alexeievna/Natalia_Alexeevna/g;
+        $ppUSSR =~ s/Natalia_Alexeevna_Narotchnitskaia/Nataliia_Alexeevna_Narotchnitskaia/g;
+    
+        $ppUSSR =~ s/Xenia/Xeniia/g;
+        $ppUSSR =~ s/Maia/Maiia/g;
+        $ppUSSR =~ s/Novorossisk/Novorossiisk/g;
+        $ppUSSR =~ s/Moussikonguikote/Moussiikonguiikote/g;
+    #$ppUSSR =~ s///g;
+    
     $ppUSSR =~ s/_/ /g if ($debug !~ /D/);
     push @output, $generator->addOutput('paspoort-ussr', "$ppUSSR");
 
@@ -1609,12 +1685,28 @@ if ($name =~ /[A-Za-z]/){
         $rij =~ s/Il’ich/Il’yich/g;
         $rij =~ s/Dzhy/Dzh/g;
 
-	#Vladimir_Il’yich_Lenin >< Vladimir_Il’ich_Lenin [-]
-	#Arkadiy_Bashlachev >< Arkadiy_Bashlachyev [-]
-	#Yo.V._Vasil’ev >< Ye.V._Vasil’ev [-]
-	#Uyog >< Uyeg [-]
-	#Dzhesyumel >< Dzhyesyumel [-]
+    ##2nde Testset
+        $rij =~ s/aenko$/ayenko/g;
+        $rij =~ s/Vorob’yev/Vorob’yov/g;
+        $rij =~ s/Stognienko/Stogniyenko/g;
+        $rij =~ s/Gimaev/Gimayev/g;
+        $rij =~ s/Chernyshyev/Chernyshev/g;
+        $rij =~ s/Dokuchaev/Dokuchayev/g;
+        $rij =~ s/Gordienko/Gordiyenko/g;
+        $rij =~ s/Lagernoe/Lagernoye/g;
+        $rij =~ s/Chyertovo/Chertovo/g;
+        $rij =~ s/zhnee_/zhneye_/g;
+        $rij =~ s/zhnee$/zhneye/g;
+        $rij =~ s/Begichyevo/Begichevo/g;
+        $rij =~ s/Solov’i/Solov’yi/g;
+        $rij =~ s/Maloe_/Maloye_/g; 
+        $rij =~ s/Maloe$/Maloye/g;
 
+	$rij =~ s/etta_/yetta_/g;
+        $rij =~ s/etta$/yetta/g;
+        $rij =~ s/Sukhoe/Sukhoye/g;
+
+    
         $rij =~ s/_/ /g if ($debug !~ /D/);
 	push @output, $generator->addOutput('rijbewijs', "$rij");
 
