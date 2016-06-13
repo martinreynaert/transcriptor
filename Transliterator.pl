@@ -15,7 +15,7 @@ my $rootdir;
 BEGIN { $rootdir = $ARGV[0]; }
 use lib "$rootdir/lib";
 my $tmpdir = $ARGV[1];
-#use Transliterator::HTMLFactory;
+use Transliterator::JSONFactory;
 my $debug = ();
 $debug = $ARGV[3] if ( defined $ARGV[3] );
 
@@ -311,7 +311,7 @@ while ( my $tu = <TU> ) {
 close TU;
 
 # Initialize generator
-my $generator = Transliterator::HTMLFactory->new( \%TU, $type );
+my $generator = Transliterator::JSONFactory->new( \%TU, $type );
 
 #if ($debug =~ /D/){
 my @debug     = ();
