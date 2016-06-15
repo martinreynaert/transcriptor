@@ -16,7 +16,7 @@ BEGIN { $rootdir = $ARGV[0]; }
 use lib "$rootdir/lib";
 my $tmpdir = $ARGV[1];
 use Transliterator::JSONFactory;
-my $debug = ();
+my $debug = '';
 $debug = $ARGV[3] if ( defined $ARGV[3] );
 
 open( IN2, ">$tmpdir/SEEINPUT.txt" );
