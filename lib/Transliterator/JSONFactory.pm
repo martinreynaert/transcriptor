@@ -96,7 +96,7 @@ sub getVakAdvies {
 	my %group = ();
 	$group{'img'} = ($use_taalunie == 1) ? 'nederlands-taalunie1.png' : 'afbeeldingen/nederlands.png';
 	$group{'fields'} = [];
-	push @{$group{'fields'}}, ($use_taalunie == 1) ? [$self->generateField('nederlands','',$taalunie,'','','true'),$self->generateField('nederlands','',$populair,'','','true')] : [$self->generateField('nederlands','',$populair,'','','true')];
+	push @{$group{'fields'}}, ($use_taalunie == 1) ? $taalunie ne $populair ? [$self->generateField('nederlands','',$taalunie,'','','true'),$self->generateField('nederlands','',$populair,'','','true')] : [$self->generateField('nederlands','',$taalunie,'','','true')] : [$self->generateField('nederlands','',$populair,'','','true')];
 	push @{$group{'fields'}}, [$self->generateField('taalunie','',$taalunie,'','','false')] if $use_taalunie == 0 && length($taalunie) > 0;
 	push @{$group{'fields'}}, [$self->generateField('wikipedia','',$wiki,'','','false')] if $use_taalunie == 0 && length($wiki) > 0;
 	if ( $self->{type} eq 'L' ) {
@@ -112,8 +112,8 @@ sub getVakWereld {
 	my $group = {
 		'img' => 'wereldbol-vlaggen.jpg',
 		'fields' => [
-			[$self->generateField('engels','',$engels,'','','false')],
-			[$self->generateField('duits','',$self->getOutput('populair-duits'),'','','false')]
+			[$self->generateField('engels','',$engels,'engels.jpg','','false')],
+			[$self->generateField('duits','',$self->getOutput('populair-duits'),'duits.jpg','','false')]
 		]
 	};
 	my $bgn = $self->getOutput('BGN-PCGN-simpel');
@@ -128,11 +128,11 @@ sub getVakWetenschappelijk {
 	return {
 #		TODO: change img to id and rename images to match id (all images same format)
 		'img' => 'wetenschap.png',
-		'fields' => {
-			'wetenschappelijk1' => [$self->generateField('wetenschappelijk1','',$wetenschappelijk,'','','true')],
-			'ALA-LC' => [$self->generateField('ALA-LC','ALA-LC',$self->getOutput('ALA-LC'),'','','false')],
-			'ALA-LC-simpel' => [$self->generateField('ALA-LC-simpel','ALA-LC (simple)',$self->getOutput('ALA-LC-simpel'),'','','false')]
-		}
+		'fields' => [
+			[$self->generateField('wetenschappelijk1','',$wetenschappelijk,'','','true')],
+			[$self->generateField('ALA-LC','ALA-LC',$self->getOutput('ALA-LC'),'','','false')],
+			[$self->generateField('ALA-LC-simpel','ALA-LC (simple)',$self->getOutput('ALA-LC-simpel'),'','','false')]
+		]
 	};
 }
 
