@@ -64,7 +64,7 @@ sub generateJSON {
 	push @{$output{'other'}}, $self->getVakBibliotheken();
 	push @{$output{'other'}}, $self->getVakPaspoorten() if ( ( $self->{type} ne 'L' ) and ( $self->{type} ne 'O' ) );
 	push @{$output{'other'}}, $self->getVakGegevensuitwisseling();
-	return encode_json \%output;
+	return to_json(\%output, {utf8 => 1, allow_blessed => 1, convert_blessed => 1});
 }
 
 sub generateField {
