@@ -115,7 +115,7 @@ STYLE = 'classic'
 ACTIONS = [
     Action(id='Transliterate',name="Transliterator",
            description="Transliterate a Cyrillic name",command="perl " + BASEDIR + "/Transliterator.pl " + BASEDIR + " $TMPDIRECTORY $PARAMETERS",
-           mimetype="text/plain",
+           mimetype="application/json",
            tmpdir=True,
            parameters=[
                StringParameter(id='x',name="Input"),
