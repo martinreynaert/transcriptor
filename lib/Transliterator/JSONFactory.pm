@@ -64,21 +64,12 @@ sub generateJSON {
 	push @{$output{'other'}}, $self->getVakBibliotheken();
 	push @{$output{'other'}}, $self->getVakPaspoorten() if ( ( $self->{type} ne 'L' ) and ( $self->{type} ne 'O' ) );
 	push @{$output{'other'}}, $self->getVakGegevensuitwisseling();
-	return to_json(\%output, {utf8 => 1, allow_blessed => 1, convert_blessed => 1});
+	return to_json(\%output, {utf8 => 1});
 }
 
 sub generateField {
-	my ($id, $label, $value, $bullet, $external_link, $is_main) = @_;
-	my $hash = { 'id' => $id, 'value' => $value, 'main' => $is_main };
-	if (length($label) > 0) {
-		$$hash{'label'} = $label;
-	}
-	if (length($bullet) > 0) {
-		$$hash{'bullet'} = $bullet;
-	}
-	if (length($external_link) > 0) {
-		$$hash{'external_link'} = $external_link;
-	}
+	my ($self, $id, $label, $value, $bullet, $external_link, $is_main) = @_;
+	my $hash = { 'id' => $id, 'value' => $value, 'main' => $is_main, 'label' => $label, 'bullet' => $bullet, 'external_link' => $external_link };
 	return $hash;
 }
 
@@ -94,7 +85,7 @@ sub getVakAdvies {
 	my $use_taalunie = ( length($taalunie) > 0 && $self->{type} eq 'L' ) ? 1 : 0;
 	
 	my %group = ();
-	$group{'img'} = ($use_taalunie == 1) ? 'nederlands-taalunie1.png' : 'afbeeldingen/nederlands.png';
+	$group{'img'} = ($use_taalunie == 1) ? 'nederlands-taalunie1.png' : 'nederlands.png';
 	$group{'fields'} = [];
 	push @{$group{'fields'}}, ($use_taalunie == 1) ? $taalunie ne $populair ? [$self->generateField('nederlands','',$taalunie,'','','true'),$self->generateField('nederlands','',$populair,'','','true')] : [$self->generateField('nederlands','',$taalunie,'','','true')] : [$self->generateField('nederlands','',$populair,'','','true')];
 	push @{$group{'fields'}}, [$self->generateField('taalunie','',$taalunie,'','','false')] if $use_taalunie == 0 && length($taalunie) > 0;
