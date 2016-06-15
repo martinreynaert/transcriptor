@@ -85,7 +85,7 @@ sub getVakAdvies {
 	my $use_taalunie = ( length($taalunie) > 0 && $self->{type} eq 'L' ) ? 1 : 0;
 	
 	my %group = ();
-	$group{'img'} = ($use_taalunie == 1) ? 'nederlands-taalunie1.png' : 'afbeeldingen/nederlands.png';
+	$group{'img'} = ($use_taalunie == 1) ? 'nederlands-taalunie1.png' : 'nederlands.png';
 	$group{'fields'} = [];
 	push @{$group{'fields'}}, ($use_taalunie == 1) ? $taalunie ne $populair ? [$self->generateField('nederlands','',$taalunie,'','','true'),$self->generateField('nederlands','',$populair,'','','true')] : [$self->generateField('nederlands','',$taalunie,'','','true')] : [$self->generateField('nederlands','',$populair,'','','true')];
 	push @{$group{'fields'}}, [$self->generateField('taalunie','',$taalunie,'','','false')] if $use_taalunie == 0 && length($taalunie) > 0;
