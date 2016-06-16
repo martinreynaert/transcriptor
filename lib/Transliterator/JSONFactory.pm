@@ -100,16 +100,13 @@ sub getVakAdvies {
 sub getVakWereld {
 	my ($self) = @_;
 	my $engels = $self->getOutput('populair-engels');
-	my $group = {
-		'img' => 'wereldbol-vlaggen.jpg',
-		'fields' => [
-			[$self->generateField('engels','',$engels,'engels.jpg','','false')],
-			[$self->generateField('duits','',$self->getOutput('populair-duits'),'duits.jpg','','false')]
-		]
-	};
 	my $bgn = $self->getOutput('BGN-PCGN-simpel');
-	push @{$$group{'fields'}{'engels'}}, $bgn unless $engels eq $bgn;
-	return $group;
+	my %group = ();
+	$group{'img'} = 'wereldbol-vlaggen.jpg';
+	$group{'fields'} = [];
+	push @{$group{'fields'}}, $engels eq $bgn ? [$self->generateField('engels','',$engels,'engels.jpg','','false')] : [$self->generateField('engels','',$engels,'engels.jpg','','false'),[$self->generateField('engels','',$bgn,'engels.jpg','','false')]];
+	push @{$group{'fields'}}, [$self->generateField('duits','',$self->getOutput('populair-duits'),'duits.jpg','','false')];
+	return \%group;
 }
 
 sub getVakWetenschappelijk {
