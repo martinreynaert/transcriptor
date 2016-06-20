@@ -104,7 +104,7 @@ sub getVakWereld {
 	my %group = ();
 	$group{'img'} = 'wereldbol-vlaggen.jpg';
 	$group{'fields'} = [];
-	push @{$group{'fields'}}, $engels eq $bgn ? [$self->generateField('engels','',$engels,'engels.jpg','','false')] : [$self->generateField('engels','',$engels,'engels.jpg','','false'),[$self->generateField('engels','',$bgn,'engels.jpg','','false')]];
+	push @{$group{'fields'}}, defined $bgn && length($bgn) > 0 && $engels ne $bgn ? [$self->generateField('engels','',$engels,'engels.jpg','','false'),$self->generateField('engels','',$bgn,'engels.jpg','','false')] : [$self->generateField('engels','',$engels,'engels.jpg','','false')];
 	push @{$group{'fields'}}, [$self->generateField('duits','',$self->getOutput('populair-duits'),'duits.jpg','','false')];
 	return \%group;
 }
