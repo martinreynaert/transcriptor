@@ -1,4 +1,4 @@
-#öß§²
+
 use strict;
 use warnings;
 
