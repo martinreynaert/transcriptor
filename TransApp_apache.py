@@ -56,19 +56,19 @@ elif 'VIRTUAL_ENV' in os.environ:
     BINDIR = os.environ['VIRTUAL_ENV'] + '/bin/'
     BASEDIR = os.path.dirname(os.path.realpath(__file__))
 
-    if hostname == 'applejack': #configuration for server in Nijmegen
+    if hostname == 'mlp01': #configuration for server in Nijmegen
         HOST = "webservices-lst.science.ru.nl"
         URLPREFIX = 'transcriptor'
-        BASEDIR = '/scratch2/www/webservices-lst/live/repo/transcriptor/'
+        BASEDIR = '/var/www/webservices-lst/live/repo/transcriptor/'
         TICCLTOOLS = "N"
         if not 'CLAMTEST' in os.environ:
-            ROOT = "/scratch2/www/webservices-lst/live/writable/transcriptor/"
+            ROOT = "/var/www/webservices-lst/live/writable/transcriptor/"
             if 'CLAMSSL' in os.environ:
                 PORT = 443
             else:
                 PORT = 80
         else:
-            ROOT = "/scratch2/www/webservices-lst/test/writable/transcriptor/"
+            ROOT = "/var/www/webservices-lst/test/writable/transcriptor/"
             PORT = 81
 
         USERS_MYSQL = {
